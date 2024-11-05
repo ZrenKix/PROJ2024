@@ -4,10 +4,54 @@
 #include "Player/ProjPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Interaction/TargetInterface.h"
 
 AProjPlayerController::AProjPlayerController()
 {
 	bReplicates = true;
+}
+
+void AProjPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	
+	CursorTrace();
+}
+
+void AProjPlayerController::CursorTrace()
+{
+	FHitResult HitResult;
+	GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+
+	if(!HitResult.bBlockingHit) return;
+
+	LastTarget = ThisTarget;
+	ThisTarget = HitResult.GetActor();
+
+	if(LastTarget == nullptr)
+	{
+		if(ThisTarget != nullptr)
+		{
+			ThisTarget->OnTargeted();
+		}
+	}
+	else // LastTarget is valid
+	{
+		if(ThisTarget == nullptr)
+		{
+			LastTarget->OnTargetedEnd();
+		}
+		else // Both targets are valid
+		{
+			if(LastTarget != ThisTarget)
+			{
+				// End the last target and start the new one
+				LastTarget->OnTargetedEnd();
+				ThisTarget->OnTargeted();
+			}
+		}
+	}
+	
 }
 
 void AProjPlayerController::BeginPlay()
@@ -43,14 +87,16 @@ void AProjPlayerController::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
-	const FRotator YawRotation(0, Rotation.Yaw, 0);
+	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	if(APawn* ControlledPawn = GetPawn<APawn>())
 	{
-		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.X);
-		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.Y);
+		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
+		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
 	}
 }
+
+

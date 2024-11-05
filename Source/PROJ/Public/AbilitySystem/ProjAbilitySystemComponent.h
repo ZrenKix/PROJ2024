@@ -3,18 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/ProjCharacterBase.h"
-#include "ProjCharacter.generated.h"
+#include "AbilitySystemComponent.h"
+#include "ProjAbilitySystemComponent.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJ_API AProjCharacter : public AProjCharacterBase
+class PROJ_API UProjAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
-
-public:
-	AProjCharacter();
 	
 };

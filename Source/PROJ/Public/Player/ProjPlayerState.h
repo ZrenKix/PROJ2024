@@ -2,31 +2,31 @@
 
 #pragma once
 
-#include "AbilitySystemInterface.h"
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "ProjCharacterBase.generated.h"
-
+#include "AbilitySystemInterface.h"
+#include "GameFramework/PlayerState.h"
+#include "ProjPlayerState.generated.h"
 
 class UAttributeSet;
 class UAbilitySystemComponent;
-
+/**
+ * 
+ */
 UCLASS()
-class PROJ_API AProjCharacterBase : public ACharacter, public IAbilitySystemInterface
+class PROJ_API AProjPlayerState : public APlayerState, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
-
 public:
-	AProjCharacterBase();
+	AProjPlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
-protected:
-	virtual void BeginPlay() override;
 
+protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+	
 };
