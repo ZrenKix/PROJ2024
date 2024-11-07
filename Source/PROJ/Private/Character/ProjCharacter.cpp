@@ -26,7 +26,7 @@ void AProjCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	// Init Ability actor info for the server
-	InitAbilityActorInfo();
+	//InitAbilityActorInfo();
 }
 
 void AProjCharacter::OnRep_PlayerState()
@@ -34,7 +34,7 @@ void AProjCharacter::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 
 	// Init Ability actor info for the client
-	InitAbilityActorInfo();
+	//InitAbilityActorInfo();
 }
 
 void AProjCharacter::InitAbilityActorInfo()
