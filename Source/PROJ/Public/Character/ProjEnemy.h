@@ -17,6 +17,12 @@ class PROJ_API AProjEnemy : public AProjCharacter, public ITargetInterface
 	AProjEnemy();
 
 public:
+	
+	/** ITargetInterface */
 	virtual void OnTargeted() override;
 	virtual void OnTargetedEnd() override;
+	/** End ITargetInterface */
+	
+protected:
+	virtual void BeginPlay() override;
 };

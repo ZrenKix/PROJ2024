@@ -12,6 +12,8 @@ AProjEnemy::AProjEnemy()
 
 	AbilitySystemComponent = CreateDefaultSubobject<UProjAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal); // Kolla https://imgur.com/a/qExGmrP för mer info
+
 
 	AttributeSet = CreateDefaultSubobject<UProjAttributeSet>(TEXT("AttributeSet"));
 	
@@ -26,4 +28,11 @@ void AProjEnemy::OnTargeted()
 void AProjEnemy::OnTargetedEnd()
 {
 	GetMesh()->SetRenderCustomDepth(false);
+}
+
+void AProjEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }

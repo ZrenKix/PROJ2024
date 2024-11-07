@@ -3,7 +3,9 @@
 
 #include "Character/ProjCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/ProjPlayerState.h"
 
 AProjCharacter::AProjCharacter()
 {
@@ -17,4 +19,29 @@ AProjCharacter::AProjCharacter()
 	bUseControllerRotationRoll = false;
 
 	
+}
+
+void AProjCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	// Init Ability actor info for the server
+	//InitAbilityActorInfo();
+}
+
+void AProjCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	// Init Ability actor info for the client
+	//InitAbilityActorInfo();
+}
+
+void AProjCharacter::InitAbilityActorInfo()
+{
+	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
+	check(ProjPlayerState);
+	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
+	AbilitySystemComponent = ProjPlayerState->GetAbilitySystemComponent();
+	AttributeSet = ProjPlayerState->GetAttributeSet();
 }
