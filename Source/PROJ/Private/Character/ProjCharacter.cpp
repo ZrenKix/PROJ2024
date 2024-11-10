@@ -5,7 +5,9 @@
 
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/ProjPlayerController.h"
 #include "Player/ProjPlayerState.h"
+#include "UI/HUD/PlayerHUD.h"
 
 AProjCharacter::AProjCharacter()
 {
@@ -26,7 +28,7 @@ void AProjCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	// Init Ability actor info for the server
-	//InitAbilityActorInfo();
+	InitAbilityActorInfo();
 }
 
 void AProjCharacter::OnRep_PlayerState()
@@ -34,7 +36,7 @@ void AProjCharacter::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 
 	// Init Ability actor info for the client
-	//InitAbilityActorInfo();
+	InitAbilityActorInfo();
 }
 
 void AProjCharacter::InitAbilityActorInfo()
@@ -44,4 +46,12 @@ void AProjCharacter::InitAbilityActorInfo()
 	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
 	AbilitySystemComponent = ProjPlayerState->GetAbilitySystemComponent();
 	AttributeSet = ProjPlayerState->GetAttributeSet();
+
+	if(AProjPlayerController* PlayerController = Cast<AProjPlayerController>(GetController()))
+	{
+		if(APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD()))
+		{
+			PlayerHUD->InitOverlay(PlayerController, ProjPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }
