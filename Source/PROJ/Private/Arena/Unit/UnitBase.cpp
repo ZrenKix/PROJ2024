@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/ProjCharacterBase.h"
+#include "Arena/Unit//UnitBase.h"
 
 // Sets default values
-AProjCharacterBase::AProjCharacterBase()
+AUnitBase::AUnitBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-void AProjCharacterBase::BeginPlay()
+void AUnitBase::BeginPlay()
 {
 	Super::BeginPlay();
 }
