@@ -5,19 +5,19 @@
 #include "AbilitySystemInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "ProjCharacterBase.generated.h"
+#include "UnitBase.generated.h"
 
 
 class UAttributeSet;
 class UAbilitySystemComponent;
 
 UCLASS()
-class PROJ_API AProjCharacterBase : public ACharacter, public IAbilitySystemInterface
+class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	AProjCharacterBase();
+	AUnitBase();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
