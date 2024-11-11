@@ -62,8 +62,10 @@ void AProjPlayerController::BeginPlay()
 	check(ProjContext);
 
 	UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(LocalPlayerSubsystem);
-	LocalPlayerSubsystem->AddMappingContext(ProjContext, 0);
+	if(LocalPlayerSubsystem)
+	{
+		LocalPlayerSubsystem->AddMappingContext(ProjContext, 0);
+	}
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
