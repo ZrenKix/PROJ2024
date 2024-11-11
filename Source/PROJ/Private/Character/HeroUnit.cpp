@@ -54,6 +54,11 @@ bool AHeroUnit::LevelUp()
 	return Super::LevelUp();
 }
 
+void AHeroUnit::OnDeath()
+{
+	Super::OnDeath();
+}
+
 void AHeroUnit::InitAbilityActorInfo()
 {
 	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
