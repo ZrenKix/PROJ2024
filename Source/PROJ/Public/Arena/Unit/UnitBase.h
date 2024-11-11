@@ -18,8 +18,6 @@ class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface
 
 public:
 	AUnitBase();
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
-	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -29,4 +27,13 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+public:
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
+	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	
+	virtual bool ActionTurn();
+	virtual int GainXp(int Amount);
+	virtual bool LevelUp();
+	virtual void OnDeath();
 };

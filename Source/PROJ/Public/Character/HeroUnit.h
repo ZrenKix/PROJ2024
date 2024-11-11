@@ -16,9 +16,19 @@ class PROJ_API AHeroUnit : public AUnitBase
 
 public:
 	AHeroUnit();
-	virtual void PossessedBy(AController* NewController) override;
-	virtual void OnRep_PlayerState() override;
 
 private:
 	void InitAbilityActorInfo();
+
+public:
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
+
+	virtual bool ActionTurn() override;
+	virtual int GainXp(int Amount) override;
+	virtual bool LevelUp() override;
+
+private:
+	int Xp;
+	int RequiredXp;
 };
