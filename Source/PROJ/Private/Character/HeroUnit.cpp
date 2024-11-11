@@ -39,6 +39,21 @@ void AHeroUnit::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+bool AHeroUnit::ActionTurn()
+{
+	return Super::ActionTurn();
+}
+
+int AHeroUnit::GainXp(int Amount)
+{
+	return Super::GainXp(Amount);
+}
+
+bool AHeroUnit::LevelUp()
+{
+	return Super::LevelUp();
+}
+
 void AHeroUnit::InitAbilityActorInfo()
 {
 	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
