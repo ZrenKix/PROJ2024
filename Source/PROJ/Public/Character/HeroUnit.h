@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Arena/Unit/UnitBase.h"
-#include "ProjCharacter.generated.h"
+#include "HeroUnit.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJ_API AProjCharacter : public AUnitBase
+class PROJ_API AHeroUnit : public AUnitBase
 {
 	GENERATED_BODY()
 
 public:
-	AProjCharacter();
+	AHeroUnit();
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 

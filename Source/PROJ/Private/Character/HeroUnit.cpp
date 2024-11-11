@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/ProjCharacter.h"
+#include "Character/HeroUnit.h"
 
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -9,7 +9,7 @@
 #include "Player/ProjPlayerState.h"
 #include "UI/HUD/PlayerHUD.h"
 
-AProjCharacter::AProjCharacter()
+AHeroUnit::AHeroUnit()
 {
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 400.0f, 0.0f);
@@ -23,7 +23,7 @@ AProjCharacter::AProjCharacter()
 	
 }
 
-void AProjCharacter::PossessedBy(AController* NewController)
+void AHeroUnit::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
@@ -31,7 +31,7 @@ void AProjCharacter::PossessedBy(AController* NewController)
 	InitAbilityActorInfo();
 }
 
-void AProjCharacter::OnRep_PlayerState()
+void AHeroUnit::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
@@ -39,7 +39,7 @@ void AProjCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
-void AProjCharacter::InitAbilityActorInfo()
+void AHeroUnit::InitAbilityActorInfo()
 {
 	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
 	check(ProjPlayerState);
