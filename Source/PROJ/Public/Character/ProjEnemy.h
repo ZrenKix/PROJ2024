@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/ProjCharacterBase.h"
+#include "Arena/Unit/UnitBase.h"
 #include "Interaction/TargetInterface.h"
 #include "ProjEnemy.generated.h"
 
@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class PROJ_API AProjEnemy : public AProjCharacterBase, public ITargetInterface
+class PROJ_API AProjEnemy : public AUnitBase, public ITargetInterface
 {
 	GENERATED_BODY()
 	AProjEnemy();
