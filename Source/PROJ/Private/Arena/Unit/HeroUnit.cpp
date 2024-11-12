@@ -4,6 +4,7 @@
 #include "Arena/Unit/HeroUnit.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/ProjPlayerController.h"
 #include "Player/ProjPlayerState.h"
@@ -64,6 +65,7 @@ void AHeroUnit::InitAbilityActorInfo()
 	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
 	check(ProjPlayerState);
 	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
+	Cast<UProjAbilitySystemComponent>(ProjPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = ProjPlayerState->GetAbilitySystemComponent();
 	AttributeSet = ProjPlayerState->GetAttributeSet();
 

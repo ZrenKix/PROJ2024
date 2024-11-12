@@ -45,7 +45,7 @@ void UProjAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	//Source = causer of the effect, Target = target of the effect (Owener is AS)
 
 	Props.EffectContextHandle = Data.EffectSpec.GetContext();
-	Props.SourceController = Props.SourceASC->AbilityActorInfo->PlayerController.Get();
+	Props.SourceASC = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
 
 	if(IsValid(Props.SourceASC) && Props.SourceASC->AbilityActorInfo.IsValid() && Props.SourceASC->AbilityActorInfo->AvatarActor.IsValid())
 	{

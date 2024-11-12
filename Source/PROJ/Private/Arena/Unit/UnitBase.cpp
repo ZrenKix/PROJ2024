@@ -14,6 +14,10 @@ void AUnitBase::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AUnitBase::InitAbilityActorInfo()
+{
+}
+
 int AUnitBase::GainXp(int Amount)
 {
 	return 1;
