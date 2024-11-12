@@ -32,8 +32,9 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
-	virtual bool ActionTurn();
+	virtual bool ActionTurn() PURE_VIRTUAL(AUnitBase::ActionTurn, return false;);
+	virtual void OnDeath() PURE_VIRTUAL(AUnitBase::ActionTurn, );
+	
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
-	virtual void OnDeath();
 };

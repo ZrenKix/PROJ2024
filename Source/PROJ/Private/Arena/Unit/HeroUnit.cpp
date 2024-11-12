@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/HeroUnit.h"
+#include "Arena/Unit/HeroUnit.h"
 
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -52,6 +52,11 @@ int AHeroUnit::GainXp(int Amount)
 bool AHeroUnit::LevelUp()
 {
 	return Super::LevelUp();
+}
+
+void AHeroUnit::OnDeath()
+{
+	Super::OnDeath();
 }
 
 void AHeroUnit::InitAbilityActorInfo()

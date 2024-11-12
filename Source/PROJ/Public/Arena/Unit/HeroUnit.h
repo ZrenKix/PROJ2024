@@ -27,6 +27,7 @@ public:
 	virtual bool ActionTurn() override;
 	virtual int GainXp(int Amount) override;
 	virtual bool LevelUp() override;
+	virtual void OnDeath() override;
 
 private:
 	int Xp;
