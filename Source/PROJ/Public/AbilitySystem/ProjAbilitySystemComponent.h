@@ -6,9 +6,13 @@
 #include "AbilitySystemComponent.h"
 #include "ProjAbilitySystemComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/);
+
 /**
  * 
  */
+
+class UGameplayAbility;
 UCLASS()
 class PROJ_API UProjAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -16,6 +20,10 @@ class PROJ_API UProjAbilitySystemComponent : public UAbilitySystemComponent
 
 public:
 	void AbilityActorInfoSet();
+
+	FEffectAssetTags OnEffectAssetTags;
+
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilites);
 
 protected:
 

@@ -30,6 +30,7 @@ void AHeroUnit::PossessedBy(AController* NewController)
 
 	// Init Ability actor info for the server
 	InitAbilityActorInfo();
+	AddDefaultAbilities();
 }
 
 void AHeroUnit::OnRep_PlayerState()
