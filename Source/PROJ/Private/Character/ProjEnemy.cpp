@@ -33,6 +33,11 @@ void AProjEnemy::OnTargetedEnd()
 void AProjEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	InitAbilityActorInfo();
+}
+
+void AProjEnemy::InitAbilityActorInfo()
+{
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 }
