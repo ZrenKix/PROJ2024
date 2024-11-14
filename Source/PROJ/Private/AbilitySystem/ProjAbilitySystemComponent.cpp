@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 
+#include "DBGameplayTags.h"
+
 void UProjAbilitySystemComponent::AbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UProjAbilitySystemComponent::EffectApplied);
