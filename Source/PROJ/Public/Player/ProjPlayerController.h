@@ -4,9 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "GameplayTagContainer.h"
 #include "ProjPlayerController.generated.h"
 
 
+struct FGameplayTag;
+class UDBInputConfig;
 class ITargetInterface;
 struct FInputActionValue;
 class UInputMappingContext;
@@ -37,4 +40,11 @@ private:
 
 	TScriptInterface<ITargetInterface> LastTarget;
 	TScriptInterface<ITargetInterface> ThisTarget;
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UDBInputConfig> InputConfig;
 };

@@ -3,7 +3,8 @@
 
 #include "Player/ProjPlayerController.h"
 #include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
+#include "GameplayTagContainer.h"
+#include "Input/DBInputComponent.h"
 #include "Interaction/TargetInterface.h"
 
 AProjPlayerController::AProjPlayerController()
@@ -54,6 +55,21 @@ void AProjPlayerController::CursorTrace()
 	
 }
 
+void AProjPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+}
+
+void AProjPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Red, *InputTag.ToString());
+}
+
+void AProjPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Red, *InputTag.ToString());
+}
+
 void AProjPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -80,9 +96,9 @@ void AProjPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AProjPlayerController::Move);
+	UDBInputComponent* DBInputComponent = CastChecked<UDBInputComponent>(InputComponent);
+	DBInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AProjPlayerController::Move);
+	DBInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void AProjPlayerController::Move(const FInputActionValue& InputActionValue)
