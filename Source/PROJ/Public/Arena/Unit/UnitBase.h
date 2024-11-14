@@ -10,6 +10,7 @@
 
 class UAttributeSet;
 class UAbilitySystemComponent;
+class UGameplayAbility;
 
 UCLASS()
 class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface
@@ -21,6 +22,10 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void InitAbilityActorInfo();
+
+	void AddDefaultAbilities();
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -37,4 +42,9 @@ public:
 	
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
+
+private:
+
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 };

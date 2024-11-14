@@ -3,6 +3,8 @@
 
 #include "Arena/Unit//UnitBase.h"
 
+#include "AbilitySystem/ProjAbilitySystemComponent.h"
+
 // Sets default values
 AUnitBase::AUnitBase()
 {
@@ -12,6 +14,19 @@ AUnitBase::AUnitBase()
 void AUnitBase::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AUnitBase::InitAbilityActorInfo()
+{
+}
+
+void AUnitBase::AddDefaultAbilities()
+{
+
+	UProjAbilitySystemComponent* UnitASC = CastChecked<UProjAbilitySystemComponent>(AbilitySystemComponent);
+	if(!HasAuthority()) return;
+
+	UnitASC->AddCharacterAbilities(DefaultAbilities);
 }
 
 int AUnitBase::GainXp(int Amount)

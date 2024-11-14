@@ -18,7 +18,7 @@ public:
 	AHeroUnit();
 
 private:
-	void InitAbilityActorInfo();
+	virtual void InitAbilityActorInfo() override;
 
 public:
 	virtual void PossessedBy(AController* NewController) override;
