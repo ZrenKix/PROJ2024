@@ -8,8 +8,22 @@ void UProjAbilitySystemComponent::AbilityActorInfoSet()
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UProjAbilitySystemComponent::EffectApplied);
 }
 
+void UProjAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilites)
+{
+	for(TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilites)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		//GiveAbility(AbilitySpec);
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 void UProjAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
                                                 const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveHandle)
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, TEXT("Effect applied"));
+	FGameplayTagContainer TagContainer;
+	SpecApplied.GetAllAssetTags(TagContainer);
+
+	OnEffectAssetTags.Broadcast(TagContainer);
+
 }
