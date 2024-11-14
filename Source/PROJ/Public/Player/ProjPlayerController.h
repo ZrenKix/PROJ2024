@@ -14,6 +14,7 @@ class ITargetInterface;
 struct FInputActionValue;
 class UInputMappingContext;
 class UInputAction;
+class UProjAbilitySystemComponent;
 /**
  * 
  */
@@ -40,6 +41,7 @@ private:
 
 	TScriptInterface<ITargetInterface> LastTarget;
 	TScriptInterface<ITargetInterface> ThisTarget;
+	FHitResult CursorHitResult;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -47,4 +49,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UDBInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<UProjAbilitySystemComponent> AbilitySystemComponent;
+
+	UProjAbilitySystemComponent* GetAbilitySystemComponent();
 };

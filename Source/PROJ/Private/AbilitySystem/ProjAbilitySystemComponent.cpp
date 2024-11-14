@@ -4,6 +4,7 @@
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 
 #include "DBGameplayTags.h"
+#include "AbilitySystem/Abilities/DBGameplayAbility.h"
 
 void UProjAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -12,11 +13,44 @@ void UProjAbilitySystemComponent::AbilityActorInfoSet()
 
 void UProjAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilites)
 {
-	for(TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilites)
+	for(const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilites)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
-		//GiveAbility(AbilitySpec);
-		GiveAbilityAndActivateOnce(AbilitySpec);
+		if(const UDBGameplayAbility* DBAbility = Cast<UDBGameplayAbility>(AbilitySpec.Ability))
+		{
+			AbilitySpec.DynamicAbilityTags.AddTag(DBAbility->StartupInputTag);
+			GiveAbility(AbilitySpec);
+		}
+	}
+}
+
+void UProjAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	if(!InputTag.IsValid()) return;
+
+	for (auto& AbilitySpec : GetActivatableAbilities())
+	{
+		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			if(!AbilitySpec.IsActive())
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+	}
+}
+
+void UProjAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
+	if(!InputTag.IsValid()) return;
+
+	for (auto& AbilitySpec : GetActivatableAbilities())
+	{
+		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputReleased(AbilitySpec);
+		}
 	}
 }
 
