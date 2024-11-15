@@ -17,10 +17,28 @@ class PROJ_API AProjEnemy : public AUnitBase, public ITargetInterface
 	AProjEnemy();
 
 public:
+
+	/** TILLFÄLLIGT */
+
+	// Health property
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats")
+	float Health;
+
+	// Function to determine if the enemy is alive
+	UFUNCTION(BlueprintCallable, Category="Stats")
+	bool IsAlive() const;
+
+	void Attack(class ABaseCharacter* Target);
+	
+	void Die();
+	void NotifyPlayerOfDeath();
+
+	/** TILLFÄLLIGT SLUT */
 	
 	/** ITargetInterface */
-	virtual void OnTargeted() override;
-	virtual void OnTargetedEnd() override;
+	// Override interface functions
+	virtual void OnTargeted_Implementation() override;
+	virtual void OnTargetedEnd_Implementation() override;
 	/** End ITargetInterface */
 	
 protected:
