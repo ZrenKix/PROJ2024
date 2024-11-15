@@ -2,8 +2,12 @@
 
 
 #include "Player/ProjPlayerController.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
+#include "GameplayTagContainer.h"
+#include "AbilitySystem/ProjAbilitySystemComponent.h"
+#include "Input/DBInputComponent.h"
 #include "Interaction/TargetInterface.h"
 
 AProjPlayerController::AProjPlayerController()
@@ -20,38 +24,45 @@ void AProjPlayerController::PlayerTick(float DeltaTime)
 
 void AProjPlayerController::CursorTrace()
 {
-	FHitResult HitResult;
-	GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
 
-	if(!HitResult.bBlockingHit) return;
+	if(!CursorHitResult.bBlockingHit) return;
 
 	LastTarget = ThisTarget;
-	ThisTarget = HitResult.GetActor();
+	ThisTarget = CursorHitResult.GetActor();
 
-	if(LastTarget == nullptr)
+	if(LastTarget != ThisTarget)
 	{
-		if(ThisTarget != nullptr)
-		{
-			ThisTarget->OnTargeted();
-		}
-	}
-	else // LastTarget is valid
-	{
-		if(ThisTarget == nullptr)
-		{
-			LastTarget->OnTargetedEnd();
-		}
-		else // Both targets are valid
-		{
-			if(LastTarget != ThisTarget)
-			{
-				// End the last target and start the new one
-				LastTarget->OnTargetedEnd();
-				ThisTarget->OnTargeted();
-			}
-		}
+		if(LastTarget) LastTarget->OnTargetedEnd();
+		if(ThisTarget) ThisTarget->OnTargeted();
 	}
 	
+}
+
+void AProjPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+}
+
+void AProjPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	if(GetAbilitySystemComponent() == nullptr) return;
+	GetAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+}
+
+void AProjPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	if(GetAbilitySystemComponent() == nullptr) return;
+	GetAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+}
+
+UProjAbilitySystemComponent* AProjPlayerController::GetAbilitySystemComponent()
+{
+	if(AbilitySystemComponent == nullptr)
+	{
+		AbilitySystemComponent = Cast<UProjAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return AbilitySystemComponent;
 }
 
 void AProjPlayerController::BeginPlay()
@@ -80,9 +91,9 @@ void AProjPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AProjPlayerController::Move);
+	UDBInputComponent* DBInputComponent = CastChecked<UDBInputComponent>(InputComponent);
+	DBInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AProjPlayerController::Move);
+	DBInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void AProjPlayerController::Move(const FInputActionValue& InputActionValue)
