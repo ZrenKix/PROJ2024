@@ -5,6 +5,7 @@
 #include "AbilitySystemInterface.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "UnitBase.generated.h"
 
 
@@ -13,7 +14,7 @@ class UAbilitySystemComponent;
 class UGameplayAbility;
 
 UCLASS()
-class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface
+class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
