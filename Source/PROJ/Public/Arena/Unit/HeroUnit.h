@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystem/ProjAttributeSet.h"
 #include "Arena/Unit/UnitBase.h"
 #include "HeroUnit.generated.h"
 
@@ -21,6 +22,11 @@ private:
 	virtual void InitAbilityActorInfo() override;
 
 public:
+	bool IsDead() const
+	{
+		return Cast<UProjAttributeSet>(AttributeSet)->GetHealth() <= 0;
+	}
+	
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 
