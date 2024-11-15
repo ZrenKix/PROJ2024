@@ -4,12 +4,17 @@
 #include "Arena/Unit//UnitBase.h"
 
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "PROJ/PROJ.h"
 
 // Sets default values
 AUnitBase::AUnitBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 }
 
 void AUnitBase::BeginPlay()
