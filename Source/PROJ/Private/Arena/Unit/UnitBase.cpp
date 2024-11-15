@@ -4,6 +4,7 @@
 #include "Arena/Unit//UnitBase.h"
 
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AUnitBase::AUnitBase()
@@ -27,6 +28,19 @@ void AUnitBase::AddDefaultAbilities()
 	if(!HasAuthority()) return;
 
 	UnitASC->AddCharacterAbilities(DefaultAbilities);
+}
+
+FVector AUnitBase::GetPlayerLocation()
+{
+	// Get the Player Character (assuming the player is the default player character)
+	ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	if (PlayerCharacter)
+	{
+		return PlayerCharacter->GetActorLocation();
+	}
+
+	// Return a default value if the player character isn't found
+	return FVector::ZeroVector;
 }
 
 int AUnitBase::GainXp(int Amount)
