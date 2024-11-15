@@ -6,8 +6,11 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Math/UnitConversion.h"
 #include "Player/ProjPlayerController.h"
 #include "Player/ProjPlayerState.h"
+#include "Player/Controllers/ArenaPlayerController.h"
 #include "UI/HUD/PlayerHUD.h"
 
 AHeroUnit::AHeroUnit()
@@ -43,7 +46,23 @@ void AHeroUnit::OnRep_PlayerState()
 
 bool AHeroUnit::ActionTurn()
 {
-	return Super::ActionTurn();
+	// is Hero dead, return false
+	if (IsDead())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s is dead"), *GetName());
+		return false;
+	}
+	// Posses this
+	AArenaPlayerController* PC = Cast<AArenaPlayerController>(GetController());
+	PC->Possess(this);
+	
+	// Stuff
+	UE_LOG(LogTemp, Warning, TEXT("HeroUnit::ActionTurn"));
+	FPlatformProcess::Sleep(2);
+	
+	// Unposses current
+	PC->UnPossess();
+	return true;
 }
 
 int AHeroUnit::GainXp(int Amount)
