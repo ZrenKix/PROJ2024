@@ -2,7 +2,7 @@
 
 
 #include "Arena/Unit//UnitBase.h"
-
+#include "AbilitySystemComponent.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -26,6 +26,15 @@ void AUnitBase::InitAbilityActorInfo()
 {
 }
 
+void AUnitBase::InitializePrimaryAttributes() const
+{
+	check(IsValid(GetAbilitySystemComponent()));
+	//check(IsValid(DefaultPrimaryAttributes));
+	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(DefaultPrimaryAttributes, 1.f, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
+}
+
 void AUnitBase::AddDefaultAbilities()
 {
 
@@ -47,6 +56,8 @@ FVector AUnitBase::GetPlayerLocation()
 	// Return a default value if the player character isn't found
 	return FVector::ZeroVector;
 }
+
+
 
 int AUnitBase::GainXp(int Amount)
 {

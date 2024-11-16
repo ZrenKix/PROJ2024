@@ -34,6 +34,7 @@ void AProjEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	InitializePrimaryAttributes();
 }
 
 //----------------------------------------------------
