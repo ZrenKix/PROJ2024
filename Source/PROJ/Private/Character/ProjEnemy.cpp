@@ -6,8 +6,10 @@
 #include "AbilitySystem/ProjAttributeSet.h"
 #include "BSTurnBasedCombat/BaseCharacter.h"
 #include "BSTurnBasedCombat/TurnManager.h"
+#include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PROJ/PROJ.h"
+#include "UI/Widget/DBUserWidget.h"
 
 AProjEnemy::AProjEnemy()
 {
@@ -20,7 +22,8 @@ AProjEnemy::AProjEnemy()
 
 	AttributeSet = CreateDefaultSubobject<UProjAttributeSet>(TEXT("AttributeSet"));
 
-	Health = 50.0f;
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
+	HealthBar->SetupAttachment(GetRootComponent());
 	
 }
 
@@ -28,14 +31,59 @@ void AProjEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	InitAbilityActorInfo();
+
+	if(UDBUserWidget* DBUserWidget = Cast<UDBUserWidget>(HealthBar->GetUserWidgetObject()))
+	{
+		DBUserWidget->SetWidgetController(this);
+	}
+
+	if(const UProjAttributeSet* AS = CastChecked<UProjAttributeSet>(AttributeSet))
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AS->GetHealthAttribute()).AddLambda(
+				[this](const FOnAttributeChangeData& Data)
+			{
+				OnHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AS->GetMaxHealthAttribute()).AddLambda(
+				[this](const FOnAttributeChangeData& Data)
+			{
+				OnMaxHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+		
+		OnHealthChanged.Broadcast(AS->GetHealth());
+		OnMaxHealthChanged.Broadcast(AS->GetMaxHealth());
+	}
+
 }
 
 void AProjEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
-	InitializePrimaryAttributes();
+	InitializeDefaultAttributes();
 }
+
+void AProjEnemy::OnTargeted_Implementation()
+{
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+}
+
+void AProjEnemy::OnTargetedEnd_Implementation()
+{
+	GetMesh()->SetRenderCustomDepth(false);
+}
+
+int32 AProjEnemy::GetPlayerLevel()
+{
+	return Level;
+}
+
+
+
+
 
 //----------------------------------------------------
 // TILLFÄLLIGT
@@ -134,13 +182,4 @@ bool AProjEnemy::IsAlive() const
 	return Health > 0.0f;
 }
 
-void AProjEnemy::OnTargeted_Implementation()
-{
-	GetMesh()->SetRenderCustomDepth(true);
-	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-}
-
-void AProjEnemy::OnTargetedEnd_Implementation()
-{
-	GetMesh()->SetRenderCustomDepth(false);
-}
+//------------------------------------------------

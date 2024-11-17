@@ -65,7 +65,18 @@ public:
 	UPROPERTY(ReplicatedUsing = OnRep_Initiative, BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Initiative;
 	ATTRIBUTE_ACCESSORS(UProjAttributeSet, Initiative);
-	
+
+	UPROPERTY(ReplicatedUsing = OnRep_Stamina, BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Stamina;
+	ATTRIBUTE_ACCESSORS(UProjAttributeSet, Stamina);
+
+	/*
+     *	Secondary Attributes
+     */
+
+	UPROPERTY(ReplicatedUsing = OnRep_Armor, BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UProjAttributeSet, Armor);
 
 	//** Health/Vital attributes */
 	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Vital Attributes")
@@ -99,6 +110,12 @@ public:
 
 	UFUNCTION()
 	void OnRep_Initiative(const FGameplayAttributeData& OldInitiative) const;
+
+	UFUNCTION()
+	void OnRep_Stamina(const FGameplayAttributeData& OldStamina) const;
+
+	UFUNCTION()
+	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props);

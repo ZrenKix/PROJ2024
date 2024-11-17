@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "AbilitySystem/ProjAttributeSet.h"
+#include "Net/UnrealNetwork.h"
 
 AProjPlayerState::AProjPlayerState()
 {
@@ -16,4 +17,16 @@ AProjPlayerState::AProjPlayerState()
 	
 	// Updaterar till servern om man vill ha multiplayer, utvecklar för det även om det ej är multiplayer
 	NetUpdateFrequency = 100.f;
+}
+
+void AProjPlayerState::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AProjPlayerState, Level);
+}
+
+void AProjPlayerState::OnRep_Level(int32 OldLevel)
+{
+	
 }

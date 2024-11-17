@@ -26,14 +26,6 @@ void AUnitBase::InitAbilityActorInfo()
 {
 }
 
-void AUnitBase::InitializePrimaryAttributes() const
-{
-	check(IsValid(GetAbilitySystemComponent()));
-	//check(IsValid(DefaultPrimaryAttributes));
-	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
-	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(DefaultPrimaryAttributes, 1.f, ContextHandle);
-	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
-}
 
 void AUnitBase::AddDefaultAbilities()
 {
@@ -57,6 +49,22 @@ FVector AUnitBase::GetPlayerLocation()
 	return FVector::ZeroVector;
 }
 
+void AUnitBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level) const
+{
+	check(IsValid(GetAbilitySystemComponent()));
+	//check(IsValid(EffectClass));
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	ContextHandle.AddSourceObject(this);
+	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(EffectClass, Level, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
+}
+
+void AUnitBase::InitializeDefaultAttributes() const
+{
+	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
+	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
+	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
+}
 
 
 int AUnitBase::GainXp(int Amount)
