@@ -30,8 +30,7 @@ AHeroUnit::AHeroUnit()
 void AHeroUnit::PossessedBy(APlayerController* NewController)
 {
 	Super::PossessedBy(NewController);
-
-	// Init Ability actor info for the server
+	
 	InitAbilityActorInfo();
 	AddDefaultAbilities();
 }
@@ -39,38 +38,21 @@ void AHeroUnit::PossessedBy(APlayerController* NewController)
 void AHeroUnit::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
-
-	// Init Ability actor info for the client
+	
 	InitAbilityActorInfo();
 }
 
 bool AHeroUnit::ActionTurn()
 {
-	// Check if Hero is dead, return false if dead
 	if (IsDead())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s is dead"), *GetName());
 		return false;
 	}
-
-	/*
-	// Possess this unit
-	AArenaPlayerController* PC = Cast<AArenaPlayerController>(GetController());
-	if (PC)
-	{
-		PC->Possess(this);
-		UE_LOG(LogTemp, Display, TEXT("Possessed Unit: %s"), *GetName());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Display, TEXT("Failed to possess"));
-	}
-
-	// Additional logic here
+	
 	UE_LOG(LogTemp, Warning, TEXT("HeroUnit::ActionTurn"));
-	*/
 
-	return Cast<AArenaPlayerController>(Controller)->CastSpell();
+	return true;
 }
 
 int AHeroUnit::GainXp(int Amount)
