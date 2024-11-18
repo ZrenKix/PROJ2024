@@ -105,3 +105,10 @@ void AHeroUnit::InitAbilityActorInfo()
 		}
 	}
 }
+
+int32 AHeroUnit::GetPlayerLevel()
+{
+	const AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
+	check(ProjPlayerState);
+	return ProjPlayerState->GetPlayerLevel();
+}

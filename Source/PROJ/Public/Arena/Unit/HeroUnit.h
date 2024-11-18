@@ -20,6 +20,7 @@ public:
 
 private:
 	virtual void InitAbilityActorInfo() override;
+	
 
 public:
 	bool IsDead() const
@@ -37,6 +38,8 @@ public:
 	virtual int GainXp(int Amount) override;
 	virtual bool LevelUp() override;
 	virtual void OnDeath() override;
+
+	virtual int32 GetPlayerLevel() override;
 
 private:
 	int Xp;
