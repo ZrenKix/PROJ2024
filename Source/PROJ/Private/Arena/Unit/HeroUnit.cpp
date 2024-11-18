@@ -27,7 +27,7 @@ AHeroUnit::AHeroUnit()
 	
 }
 
-void AHeroUnit::PossessedBy(AController* NewController)
+void AHeroUnit::PossessedBy(APlayerController* NewController)
 {
 	Super::PossessedBy(NewController);
 
@@ -46,22 +46,30 @@ void AHeroUnit::OnRep_PlayerState()
 
 bool AHeroUnit::ActionTurn()
 {
-	// is Hero dead, return false
+	// Check if Hero is dead, return false if dead
 	if (IsDead())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s is dead"), *GetName());
 		return false;
 	}
-	// Posses this
+
+	/*
+	// Possess this unit
 	AArenaPlayerController* PC = Cast<AArenaPlayerController>(GetController());
-	PC->Possess(this);
-	
-	// Stuff
+	if (PC)
+	{
+		PC->Possess(this);
+		UE_LOG(LogTemp, Display, TEXT("Possessed Unit: %s"), *GetName());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("Failed to possess"));
+	}
+
+	// Additional logic here
 	UE_LOG(LogTemp, Warning, TEXT("HeroUnit::ActionTurn"));
-	FPlatformProcess::Sleep(2);
-	
-	// Unposses current
-	PC->UnPossess();
+	*/
+
 	return true;
 }
 
