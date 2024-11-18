@@ -11,19 +11,26 @@
 
 UProjAttributeSet::UProjAttributeSet()
 {
-	InitHealth(50.f);
-	InitMaxHealth(100.f);
-	InitMana(50.f);
-	InitMaxMana(50.f);
 }
 
 void UProjAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Health, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Mana, COND_None, REPNOTIFY_Always);
+	// Primary Attributes
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Strength, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Initiative, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
+
+	// Secondary Attributes
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
+	
+	// Vital Attributes
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Health, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Mana, COND_None, REPNOTIFY_Always);
+	
 }
 
 void UProjAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -42,7 +49,7 @@ void UProjAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 
 void UProjAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props)
 {
-	//Source = causer of the effect, Target = target of the effect (Owener is AS)
+	//Source = causer of the effect, Target = target of the effect (Owner is AS)
 
 	Props.EffectContextHandle = Data.EffectSpec.GetContext();
 	Props.SourceASC = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
@@ -81,6 +88,15 @@ void UProjAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
 
+	if(Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"), *Props.TargetAvatarActor->GetName(), GetHealth());
+	}
+	else if(Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
 
 }
 
@@ -102,6 +118,28 @@ void UProjAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
 void UProjAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, MaxMana, OldMaxMana);
+}
+
+void UProjAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, Strength, OldStrength);
+}
+
+void UProjAttributeSet::OnRep_Initiative(const FGameplayAttributeData& OldInitiative) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, Initiative, OldInitiative);
+
+}
+
+void UProjAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, Stamina, OldStamina);
+
+}
+
+void UProjAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, Armor, OldArmor);
 }
 
 

@@ -2,13 +2,19 @@
 
 
 #include "Arena/Unit//UnitBase.h"
-
+#include "AbilitySystemComponent.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "PROJ/PROJ.h"
 
 // Sets default values
 AUnitBase::AUnitBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 }
 
 void AUnitBase::BeginPlay()
@@ -20,6 +26,7 @@ void AUnitBase::InitAbilityActorInfo()
 {
 }
 
+
 void AUnitBase::AddDefaultAbilities()
 {
 
@@ -28,6 +35,37 @@ void AUnitBase::AddDefaultAbilities()
 
 	UnitASC->AddCharacterAbilities(DefaultAbilities);
 }
+
+FVector AUnitBase::GetPlayerLocation()
+{
+	// Get the Player Character (assuming the player is the default player character)
+	ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	if (PlayerCharacter)
+	{
+		return PlayerCharacter->GetActorLocation();
+	}
+
+	// Return a default value if the player character isn't found
+	return FVector::ZeroVector;
+}
+
+void AUnitBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level) const
+{
+	check(IsValid(GetAbilitySystemComponent()));
+	//check(IsValid(EffectClass));
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	ContextHandle.AddSourceObject(this);
+	const FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(EffectClass, Level, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), GetAbilitySystemComponent());
+}
+
+void AUnitBase::InitializeDefaultAttributes() const
+{
+	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
+	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
+	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
+}
+
 
 int AUnitBase::GainXp(int Amount)
 {
