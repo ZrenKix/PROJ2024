@@ -70,7 +70,7 @@ bool AHeroUnit::ActionTurn()
 	UE_LOG(LogTemp, Warning, TEXT("HeroUnit::ActionTurn"));
 	*/
 
-	return true;
+	return Cast<AArenaPlayerController>(Controller)->CastSpell();
 }
 
 int AHeroUnit::GainXp(int Amount)
