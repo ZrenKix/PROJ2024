@@ -32,7 +32,7 @@ public:
 		return false;
 	}
 	
-	virtual void PossessedBy(APlayerController* NewController);
+	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 
 	virtual bool ActionTurn() override;

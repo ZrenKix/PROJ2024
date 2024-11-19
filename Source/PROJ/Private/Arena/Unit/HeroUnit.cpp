@@ -25,8 +25,9 @@ AHeroUnit::AHeroUnit()
 	bUseControllerRotationRoll = false;
 }
 
-void AHeroUnit::PossessedBy(APlayerController* NewController)
+void AHeroUnit::PossessedBy(AController* NewController)
 {
+	InitAbilityActorInfo();
 	UE_LOG(LogTemp, Warning, TEXT("PossessedBy AHeroUnit"));
 	Super::PossessedBy(NewController);
 }
@@ -68,8 +69,16 @@ void AHeroUnit::OnDeath()
 
 void AHeroUnit::InitAbilityActorInfo()
 {
+	UE_LOG(LogTemp, Display, TEXT("InitAbilityActorInfo"));
 	AProjPlayerState* ProjPlayerState = GetWorld()->GetFirstPlayerController()->GetPlayerState<AProjPlayerState>();
-	check(ProjPlayerState);
+	if (ensure(ProjPlayerState))
+	{
+		UE_LOG(LogTemp, Display, TEXT("Success"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("ProjPlayerState is null! InitAbilityActorInfo failed."));
+	}
 	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
 	Cast<UProjAbilitySystemComponent>(ProjPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = ProjPlayerState->GetAbilitySystemComponent();
