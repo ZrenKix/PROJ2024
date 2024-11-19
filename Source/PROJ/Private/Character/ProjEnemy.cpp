@@ -12,6 +12,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "PROJ/PROJ.h"
 #include "UI/Widget/DBUserWidget.h"
+#include "DBGameplayTags.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AProjEnemy::AProjEnemy()
 {
@@ -32,6 +34,7 @@ AProjEnemy::AProjEnemy()
 void AProjEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
 
 	if(UDBUserWidget* DBUserWidget = Cast<UDBUserWidget>(HealthBar->GetUserWidgetObject()))
@@ -54,10 +57,21 @@ void AProjEnemy::BeginPlay()
 			}
 		);
 		
+		AbilitySystemComponent->RegisterGameplayTagEvent(FDBGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+			this,
+			&AProjEnemy::HitReactTagChanged
+		);
+		
 		OnHealthChanged.Broadcast(AS->GetHealth());
 		OnMaxHealthChanged.Broadcast(AS->GetMaxHealth());
 	}
 
+}
+
+void AProjEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
 }
 
 void AProjEnemy::InitAbilityActorInfo()

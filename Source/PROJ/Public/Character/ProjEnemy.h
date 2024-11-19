@@ -37,6 +37,15 @@ public:
 	void NotifyPlayerOfDeath();
 
 	/** TILLFÄLLIGT SLUT */
+
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	float BaseWalkSpeed = 250.f;
+
 	
 	/** ITargetInterface */
 	// Override interface functions
@@ -67,4 +76,5 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
+
 };
