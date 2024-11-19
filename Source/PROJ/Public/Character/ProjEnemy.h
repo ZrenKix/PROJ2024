@@ -32,8 +32,6 @@ public:
 	bool IsAlive() const;
 
 	void Attack(class ABaseCharacter* Target);
-	
-	void Die();
 	void NotifyPlayerOfDeath();
 
 	/** TILLFÄLLIGT SLUT */
@@ -45,6 +43,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	float BaseWalkSpeed = 250.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
+	float LifeSpan = 5.f;
 
 	
 	/** ITargetInterface */
@@ -55,6 +56,7 @@ public:
 	
 	/** ICombatInterface */
 	virtual int32 GetPlayerLevel() override;
+	virtual void Die() override;
 	/** End ITargetInterface */
 
 	UPROPERTY(BlueprintAssignable)

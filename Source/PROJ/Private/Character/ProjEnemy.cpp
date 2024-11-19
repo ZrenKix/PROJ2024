@@ -36,6 +36,7 @@ void AProjEnemy::BeginPlay()
 	Super::BeginPlay();
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
+	UDBAbilitySystemLibrary::GiveStartupAbilites(this, AbilitySystemComponent);
 
 	if(UDBUserWidget* DBUserWidget = Cast<UDBUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
@@ -102,8 +103,11 @@ int32 AProjEnemy::GetPlayerLevel()
 	return Level;
 }
 
-
-
+void AProjEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
 
 
 //----------------------------------------------------
@@ -158,32 +162,6 @@ void AProjEnemy::Attack(ABaseCharacter* Target)
 			Target->Die();
 		}
 	}
-}
-
-
-void AProjEnemy::Die()
-{
-	// Log that the enemy has died
-	UE_LOG(LogTemp, Log, TEXT("%s has died."), *GetName());
-
-	// Play death animation or particle effects if any
-	// For example, you can trigger an animation montage or particle effect here
-
-	// Disable collision and hide the enemy
-	SetActorEnableCollision(false);
-	SetActorHiddenInGame(true);
-
-	// Optionally, destroy the enemy after some time to allow animations to play
-	SetLifeSpan(2.0f); // Destroy after 2 seconds
-
-	// Notify the TurnManager to remove this enemy from the TurnOrder
-	if (ATurnManager* TurnManager = Cast<ATurnManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ATurnManager::StaticClass())))
-	{
-		TurnManager->RemoveActorFromTurnOrder(this);
-	}
-
-	// Notify the player
-	NotifyPlayerOfDeath();
 }
 
 void AProjEnemy::NotifyPlayerOfDeath()
