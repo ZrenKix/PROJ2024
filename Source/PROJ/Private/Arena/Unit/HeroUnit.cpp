@@ -25,7 +25,7 @@ AHeroUnit::AHeroUnit()
 	bUseControllerRotationRoll = false;
 }
 
-void AHeroUnit::PossessedBy(APlayerController* NewController)
+void AHeroUnit::PossessedBy(AController* NewController)
 {
 	UE_LOG(LogTemp, Warning, TEXT("PossessedBy AHeroUnit"));
 	Super::PossessedBy(NewController);
