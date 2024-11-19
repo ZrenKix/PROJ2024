@@ -33,7 +33,7 @@ void AProjPlayerController::CursorTrace()
 
 	if(LastTarget != ThisTarget)
 	{
-		if(LastTarget) LastTarget->OnTargetedEnd();
+		if(LastTarget) LastTarget->Execute_OnTargeted()
 		if(ThisTarget) ThisTarget->OnTargeted();
 	}
 	
@@ -69,7 +69,7 @@ void AProjPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Stoppar programmet om ProjContext är nullptr
+	// Stoppar programmet om ProjContext Ã¤r nullptr
 	check(ProjContext);
 
 	UEnhancedInputLocalPlayerSubsystem* LocalPlayerSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
@@ -91,8 +91,6 @@ void AProjPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UE_LOG(LogTemp, Warning, TEXT("Mapping in super"));
-
 	UDBInputComponent* DBInputComponent = CastChecked<UDBInputComponent>(InputComponent);
 	DBInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AProjPlayerController::Move);
 	DBInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
@@ -113,5 +111,3 @@ void AProjPlayerController::Move(const FInputActionValue& InputActionValue)
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
 	}
 }
-
-

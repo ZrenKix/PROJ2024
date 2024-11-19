@@ -23,16 +23,13 @@ AHeroUnit::AHeroUnit()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-
-	
 }
 
 void AHeroUnit::PossessedBy(APlayerController* NewController)
 {
-	Super::PossessedBy(NewController);
 	
-	InitAbilityActorInfo();
-	AddDefaultAbilities();
+
+	Super::PossessedBy(NewController);
 }
 
 void AHeroUnit::OnRep_PlayerState()
@@ -72,7 +69,7 @@ void AHeroUnit::OnDeath()
 
 void AHeroUnit::InitAbilityActorInfo()
 {
-	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
+	AProjPlayerState* ProjPlayerState = GetWorld()->GetFirstPlayerController()->GetPlayerState<AProjPlayerState>();
 	check(ProjPlayerState);
 	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
 	Cast<UProjAbilitySystemComponent>(ProjPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
@@ -86,6 +83,30 @@ void AHeroUnit::InitAbilityActorInfo()
 			PlayerHUD->InitOverlay(PlayerController, ProjPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+}
+
+void AHeroUnit::BeginPlay()
+{
+	InitAbilityActorInfo();
+	AddDefaultAbilities();
+
+	if (AttributeSet)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has AttributeSet"), *GetName());
+	} else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s is missing AttributeSet"), *GetName());
+	}
+	
+	if (AbilitySystemComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has AbilitySystemComponent"), *GetName());
+	} else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s is missing AbilitySystemComponent"), *GetName());
+	}
+	
+	Super::BeginPlay();
 }
 
 int32 AHeroUnit::GetPlayerLevel()
