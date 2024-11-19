@@ -50,7 +50,7 @@ protected:
 	virtual FVector GetPlayerLocation() override;
 
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 
 
 public:
