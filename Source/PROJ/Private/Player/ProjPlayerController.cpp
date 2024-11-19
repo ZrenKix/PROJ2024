@@ -91,6 +91,8 @@ void AProjPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
+	UE_LOG(LogTemp, Warning, TEXT("Mapping in super"));
+
 	UDBInputComponent* DBInputComponent = CastChecked<UDBInputComponent>(InputComponent);
 	DBInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AProjPlayerController::Move);
 	DBInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
