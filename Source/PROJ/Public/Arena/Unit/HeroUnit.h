@@ -23,6 +23,8 @@ private:
 	
 
 public:
+	virtual void BeginPlay() override;
+	
 	bool IsDead() const
 	{
 		if (AttributeSet)

@@ -23,54 +23,32 @@ AHeroUnit::AHeroUnit()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-
-	
 }
 
 void AHeroUnit::PossessedBy(APlayerController* NewController)
 {
+	UE_LOG(LogTemp, Warning, TEXT("PossessedBy AHeroUnit"));
 	Super::PossessedBy(NewController);
-
-	// Init Ability actor info for the server
-	InitAbilityActorInfo();
-	AddDefaultAbilities();
 }
 
 void AHeroUnit::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
-
-	// Init Ability actor info for the client
+	
 	InitAbilityActorInfo();
 }
 
 bool AHeroUnit::ActionTurn()
 {
-	// Check if Hero is dead, return false if dead
 	if (IsDead())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s is dead"), *GetName());
 		return false;
 	}
-
-	/*
-	// Possess this unit
-	AArenaPlayerController* PC = Cast<AArenaPlayerController>(GetController());
-	if (PC)
-	{
-		PC->Possess(this);
-		UE_LOG(LogTemp, Display, TEXT("Possessed Unit: %s"), *GetName());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Display, TEXT("Failed to possess"));
-	}
-
-	// Additional logic here
+	
 	UE_LOG(LogTemp, Warning, TEXT("HeroUnit::ActionTurn"));
-	*/
 
-	return Cast<AArenaPlayerController>(Controller)->CastSpell();
+	return true;
 }
 
 int AHeroUnit::GainXp(int Amount)
@@ -90,7 +68,7 @@ void AHeroUnit::OnDeath()
 
 void AHeroUnit::InitAbilityActorInfo()
 {
-	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
+	AProjPlayerState* ProjPlayerState = GetWorld()->GetFirstPlayerController()->GetPlayerState<AProjPlayerState>();
 	check(ProjPlayerState);
 	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
 	Cast<UProjAbilitySystemComponent>(ProjPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
@@ -104,6 +82,30 @@ void AHeroUnit::InitAbilityActorInfo()
 			PlayerHUD->InitOverlay(PlayerController, ProjPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+}
+
+void AHeroUnit::BeginPlay()
+{
+	InitAbilityActorInfo();
+	AddDefaultAbilities();
+
+	if (AttributeSet)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has AttributeSet"), *GetName());
+	} else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s is missing AttributeSet"), *GetName());
+	}
+	
+	if (AbilitySystemComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has AbilitySystemComponent"), *GetName());
+	} else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s is missing AbilitySystemComponent"), *GetName());
+	}
+	
+	Super::BeginPlay();
 }
 
 int32 AHeroUnit::GetPlayerLevel()
