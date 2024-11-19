@@ -27,8 +27,7 @@ AHeroUnit::AHeroUnit()
 
 void AHeroUnit::PossessedBy(APlayerController* NewController)
 {
-	
-
+	UE_LOG(LogTemp, Warning, TEXT("PossessedBy AHeroUnit"));
 	Super::PossessedBy(NewController);
 }
 
