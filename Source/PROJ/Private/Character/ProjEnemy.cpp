@@ -2,6 +2,8 @@
 
 
 #include "Character/ProjEnemy.h"
+
+#include "AbilitySystem/DBAbilitySystemLibrary.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "AbilitySystem/ProjAttributeSet.h"
 #include "BSTurnBasedCombat/BaseCharacter.h"
@@ -63,6 +65,11 @@ void AProjEnemy::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	InitializeDefaultAttributes();
+}
+
+void AProjEnemy::InitializeDefaultAttributes() const
+{
+	UDBAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
 }
 
 void AProjEnemy::OnTargeted_Implementation()
