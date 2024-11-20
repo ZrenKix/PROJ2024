@@ -5,9 +5,13 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "DBGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
+#include "BSTurnBasedCombat/MyPlayerController.h"
+#include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 UProjAttributeSet::UProjAttributeSet()
 {
@@ -67,7 +71,7 @@ void UProjAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		}
 		if(Props.SourceController)
 		{
-			ACharacter* SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
+			Props.SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
 		}
 	}
 
@@ -79,6 +83,8 @@ void UProjAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		Props.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
 	}
 }
+
+
 
 void UProjAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
@@ -108,9 +114,35 @@ void UProjAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
 			const bool bFatal = NewHealth <= 0.f;
+			if(bFatal)
+			{
+				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
+				if(CombatInterface)
+				{
+					CombatInterface->Die();
+				}
+			}
+			else
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FDBGameplayTags::Get().Effects_HitReact);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
+
+			ShowFloatingText(Props, LocalIncomingDamage);
 		}
 	}
+}
 
+void UProjAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
+{
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if(AMyPlayerController* PC = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
+		}
+	}
 }
 
 void UProjAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const

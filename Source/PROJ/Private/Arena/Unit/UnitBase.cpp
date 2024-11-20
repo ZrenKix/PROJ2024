@@ -17,6 +17,21 @@ AUnitBase::AUnitBase()
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 }
 
+void AUnitBase::Die()
+{
+	MulticastHandleDeath();
+}
+
+void AUnitBase::MulticastHandleDeath_Implementation()
+{
+	GetMesh()->SetEnableGravity(true);
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
 void AUnitBase::BeginPlay()
 {
 	Super::BeginPlay();
