@@ -2,6 +2,8 @@
 
 
 #include "Character/ProjEnemy.h"
+
+#include "AbilitySystem/DBAbilitySystemLibrary.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "AbilitySystem/ProjAttributeSet.h"
 #include "BSTurnBasedCombat/BaseCharacter.h"
@@ -10,6 +12,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "PROJ/PROJ.h"
 #include "UI/Widget/DBUserWidget.h"
+#include "DBGameplayTags.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AProjEnemy::AProjEnemy()
 {
@@ -30,7 +34,9 @@ AProjEnemy::AProjEnemy()
 void AProjEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
+	UDBAbilitySystemLibrary::GiveStartupAbilites(this, AbilitySystemComponent);
 
 	if(UDBUserWidget* DBUserWidget = Cast<UDBUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
@@ -52,10 +58,21 @@ void AProjEnemy::BeginPlay()
 			}
 		);
 		
+		AbilitySystemComponent->RegisterGameplayTagEvent(FDBGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+			this,
+			&AProjEnemy::HitReactTagChanged
+		);
+		
 		OnHealthChanged.Broadcast(AS->GetHealth());
 		OnMaxHealthChanged.Broadcast(AS->GetMaxHealth());
 	}
 
+}
+
+void AProjEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
 }
 
 void AProjEnemy::InitAbilityActorInfo()
@@ -63,6 +80,11 @@ void AProjEnemy::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	InitializeDefaultAttributes();
+}
+
+void AProjEnemy::InitializeDefaultAttributes() const
+{
+	UDBAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
 }
 
 void AProjEnemy::OnTargeted_Implementation()
@@ -81,8 +103,11 @@ int32 AProjEnemy::GetPlayerLevel()
 	return Level;
 }
 
-
-
+void AProjEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
 
 
 //----------------------------------------------------
@@ -137,32 +162,6 @@ void AProjEnemy::Attack(ABaseCharacter* Target)
 			Target->Die();
 		}
 	}
-}
-
-
-void AProjEnemy::Die()
-{
-	// Log that the enemy has died
-	UE_LOG(LogTemp, Log, TEXT("%s has died."), *GetName());
-
-	// Play death animation or particle effects if any
-	// For example, you can trigger an animation montage or particle effect here
-
-	// Disable collision and hide the enemy
-	SetActorEnableCollision(false);
-	SetActorHiddenInGame(true);
-
-	// Optionally, destroy the enemy after some time to allow animations to play
-	SetLifeSpan(2.0f); // Destroy after 2 seconds
-
-	// Notify the TurnManager to remove this enemy from the TurnOrder
-	if (ATurnManager* TurnManager = Cast<ATurnManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ATurnManager::StaticClass())))
-	{
-		TurnManager->RemoveActorFromTurnOrder(this);
-	}
-
-	// Notify the player
-	NotifyPlayerOfDeath();
 }
 
 void AProjEnemy::NotifyPlayerOfDeath()

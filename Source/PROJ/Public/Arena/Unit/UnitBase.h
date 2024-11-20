@@ -22,6 +22,11 @@ class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface, pu
 public:
 	AUnitBase();
 
+	virtual void Die() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -50,7 +55,7 @@ protected:
 	virtual FVector GetPlayerLocation() override;
 
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 
 
 public:
