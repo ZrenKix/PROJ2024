@@ -27,6 +27,12 @@ void AUnitBase::InitAbilityActorInfo()
 {
 }
 
+bool AUnitBase::ActionTurn()
+{
+	return true;
+}
+
+
 
 void AUnitBase::AddDefaultAbilities()
 {

@@ -60,7 +60,7 @@ void AProjPlayerController::CursorTrace()
 
 void AProjPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
 }
 
 void AProjPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)

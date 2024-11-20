@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// © 2024 Choklad4Life. All rights reserved.
 
 
 #include "Arena/Unit/HeroUnit.h"
@@ -15,22 +15,56 @@
 
 AHeroUnit::AHeroUnit()
 {
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 400.0f, 0.0f);
-	GetCharacterMovement()->bConstrainToPlane = true;
-	GetCharacterMovement()->bSnapToPlaneAtStart = true;
-	
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
+	AbilitySystemComponent = CreateDefaultSubobject<UProjAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal); // Kolla https://imgur.com/a/qExGmrP för mer info
+
+
+	AttributeSet = CreateDefaultSubobject<UProjAttributeSet>(TEXT("AttributeSet"));
 }
 
 void AHeroUnit::PossessedBy(AController* NewController)
 {
-	InitAbilityActorInfo();
-	UE_LOG(LogTemp, Warning, TEXT("PossessedBy AHeroUnit"));
 	Super::PossessedBy(NewController);
+
+	// Enable input for the character
+	if (AArenaPlayerController* PC = Cast<AArenaPlayerController>(NewController))
+	{
+		UE_LOG(LogTemp, Display, TEXT("Enabled PlayerController"));
+		EnableInput(PC);
+	}
 }
+
+void AHeroUnit::UnPossessed()
+{
+	Super::UnPossessed();
+
+	// Disable input when unpossessed
+	DisableInput(nullptr);
+}
+
+void AHeroUnit::BeginPlay()
+{
+	Super::BeginPlay();
+	InitAbilityActorInfo();
+	AddDefaultAbilities();
+}
+
+void AHeroUnit::InitAbilityActorInfo()
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	InitializeDefaultAttributes();
+
+	if(AArenaPlayerController* PlayerController = Cast<AArenaPlayerController>(GetController()))
+	{
+		if(APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD()))
+		{
+			PlayerHUD->InitOverlay(PlayerController, GetPlayerState(), AbilitySystemComponent, AttributeSet);
+		}
+	}
+}
+
 
 void AHeroUnit::OnRep_PlayerState()
 {
@@ -67,59 +101,7 @@ void AHeroUnit::OnDeath()
 	Super::OnDeath();
 }
 
-void AHeroUnit::InitAbilityActorInfo()
-{
-	UE_LOG(LogTemp, Display, TEXT("InitAbilityActorInfo"));
-	AProjPlayerState* ProjPlayerState = GetWorld()->GetFirstPlayerController()->GetPlayerState<AProjPlayerState>();
-	if (ensure(ProjPlayerState))
-	{
-		UE_LOG(LogTemp, Display, TEXT("Success"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("ProjPlayerState is null! InitAbilityActorInfo failed."));
-	}
-	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
-	Cast<UProjAbilitySystemComponent>(ProjPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
-	AbilitySystemComponent = ProjPlayerState->GetAbilitySystemComponent();
-	AttributeSet = ProjPlayerState->GetAttributeSet();
-
-	if(AProjPlayerController* PlayerController = Cast<AProjPlayerController>(GetController()))
-	{
-		if(APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD()))
-		{
-			PlayerHUD->InitOverlay(PlayerController, ProjPlayerState, AbilitySystemComponent, AttributeSet);
-		}
-	}
-}
-
-void AHeroUnit::BeginPlay()
-{
-	InitAbilityActorInfo();
-	AddDefaultAbilities();
-
-	if (AttributeSet)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has AttributeSet"), *GetName());
-	} else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is missing AttributeSet"), *GetName());
-	}
-	
-	if (AbilitySystemComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has AbilitySystemComponent"), *GetName());
-	} else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is missing AbilitySystemComponent"), *GetName());
-	}
-	
-	Super::BeginPlay();
-}
-
 int32 AHeroUnit::GetPlayerLevel()
 {
-	const AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
-	check(ProjPlayerState);
-	return ProjPlayerState->GetPlayerLevel();
+	return 1; 
 }

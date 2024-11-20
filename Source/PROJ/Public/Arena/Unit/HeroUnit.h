@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// © 2024 Choklad4Life. All rights reserved.
 
 #pragma once
 
@@ -7,9 +7,6 @@
 #include "Arena/Unit/UnitBase.h"
 #include "HeroUnit.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class PROJ_API AHeroUnit : public AUnitBase
 {
@@ -17,13 +14,11 @@ class PROJ_API AHeroUnit : public AUnitBase
 
 public:
 	AHeroUnit();
-
-private:
-	virtual void InitAbilityActorInfo() override;
+	
+public:
 	
 
-public:
-	virtual void BeginPlay() override;
+	virtual void InitAbilityActorInfo() override;
 	
 	bool IsDead() const
 	{
@@ -33,6 +28,7 @@ public:
 	}
 	
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void UnPossessed() override;
 	virtual void OnRep_PlayerState() override;
 
 	virtual bool ActionTurn() override;
@@ -43,6 +39,9 @@ public:
 
 	virtual int32 GetPlayerLevel() override;
 
+protected:
+	virtual void BeginPlay() override;
+	
 private:
 	int Xp;
 	int RequiredXp;
