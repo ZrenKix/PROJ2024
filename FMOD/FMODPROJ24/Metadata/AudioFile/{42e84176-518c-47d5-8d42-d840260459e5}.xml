@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{42e84176-518c-47d5-8d42-d840260459e5}">
+		<property name="assetPath">
+			<value>Misc/rest_melody_wip.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>4.4780045351473925</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{061fbc6a-381c-4107-9b47-19cf0d717d03}</destination>
+		</relationship>
+	</object>
+</objects>

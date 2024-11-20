@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{14abe0b6-8bb6-4e06-906b-31adc5ee7fc8}">
+		<property name="assetPath">
+			<value>Ambience/WhiteNoise/WhiteNoise_loop_WIP.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>32.25</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{061fbc6a-381c-4107-9b47-19cf0d717d03}</destination>
+		</relationship>
+	</object>
+</objects>
