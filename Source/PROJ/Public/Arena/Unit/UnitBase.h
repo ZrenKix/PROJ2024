@@ -22,7 +22,12 @@ class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface, pu
 public:
 	AUnitBase();
 
-public:
+	virtual void Die() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
+
+protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitAbilityActorInfo();
@@ -57,13 +62,13 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystemComponent; }
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
-	virtual bool ActionTurn();
+	virtual bool ActionTurn() PURE_VIRTUAL(AUnitBase::ActionTurn, return false;);
 	virtual void OnDeath() PURE_VIRTUAL(AUnitBase::ActionTurn, );
 	
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
 
-protected:
+private:
 
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
