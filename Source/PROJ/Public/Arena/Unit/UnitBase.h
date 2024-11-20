@@ -22,6 +22,11 @@ class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface, pu
 public:
 	AUnitBase();
 
+	virtual void Die() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
+
 protected:
 	virtual void BeginPlay() override;
 
