@@ -5,11 +5,6 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Math/UnitConversion.h"
-#include "Player/ProjPlayerController.h"
-#include "Player/ProjPlayerState.h"
 #include "Player/Controllers/ArenaPlayerController.h"
 #include "UI/HUD/PlayerHUD.h"
 
