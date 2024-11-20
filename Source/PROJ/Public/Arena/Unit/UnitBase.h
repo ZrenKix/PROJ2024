@@ -26,6 +26,8 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
+	virtual AActor* GetAvatar_Implementation() override;
+	virtual bool IsDead_Implementation() const override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -51,7 +53,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Combat")
 	FVector PlayerLocation;
-
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool bDead = false;
+	
 	virtual FVector GetPlayerLocation() override;
 
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;

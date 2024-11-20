@@ -57,7 +57,7 @@ public:
 	/** ICombatInterface */
 	virtual int32 GetPlayerLevel() override;
 	virtual void Die() override;
-	/** End ITargetInterface */
+	/** End ICombatInterface */
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
