@@ -32,11 +32,21 @@ public:
 	bool IsAlive() const;
 
 	void Attack(class ABaseCharacter* Target);
-	
-	void Die();
 	void NotifyPlayerOfDeath();
 
 	/** TILLFÄLLIGT SLUT */
+
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	float BaseWalkSpeed = 250.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
+	float LifeSpan = 5.f;
+
 	
 	/** ITargetInterface */
 	// Override interface functions
@@ -46,6 +56,7 @@ public:
 	
 	/** ICombatInterface */
 	virtual int32 GetPlayerLevel() override;
+	virtual void Die() override;
 	/** End ITargetInterface */
 
 	UPROPERTY(BlueprintAssignable)
@@ -67,4 +78,5 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
+
 };
