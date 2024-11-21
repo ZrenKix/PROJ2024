@@ -26,17 +26,35 @@ void AProjPlayerController::CursorTrace()
 {
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
 
-	if(!CursorHitResult.bBlockingHit) return;
-
-	LastTarget = ThisTarget;
-	ThisTarget = CursorHitResult.GetActor();
-
-	if(LastTarget != ThisTarget)
+	if (!CursorHitResult.bBlockingHit)
 	{
-		if(LastTarget) LastTarget->OnTargetedEnd();
-		if(ThisTarget) ThisTarget->OnTargeted();
+		// Unhighlight the last target if any
+		if (ThisTarget && ThisTarget->GetClass()->ImplementsInterface(UTargetInterface::StaticClass()))
+		{
+			ITargetInterface::Execute_OnTargetedEnd(ThisTarget);
+		}
+		ThisTarget = nullptr;
+		return;
 	}
-	
+
+	AActor* HitActor = CursorHitResult.GetActor();
+	if (HitActor != ThisTarget)
+	{
+		// Unhighlight the last target
+		if (ThisTarget && ThisTarget->GetClass()->ImplementsInterface(UTargetInterface::StaticClass()))
+		{
+			ITargetInterface::Execute_OnTargetedEnd(ThisTarget);
+		}
+
+		// Update the current target
+		ThisTarget = HitActor;
+
+		// Highlight the new target if it implements the interface
+		if (ThisTarget && ThisTarget->GetClass()->ImplementsInterface(UTargetInterface::StaticClass()))
+		{
+			ITargetInterface::Execute_OnTargeted(ThisTarget);
+		}
+	}
 }
 
 void AProjPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
