@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "Player/Controllers/ArenaPlayerController.h"
 #include "UnitBase.generated.h"
 
 
@@ -28,6 +29,9 @@ public:
 	virtual void MulticastHandleDeath();
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual bool IsDead_Implementation() const override;
+
+	int MaxHealth = 3;
+	int CurrentHealth = MaxHealth;
 
 protected:
 	virtual void BeginPlay() override;
@@ -72,6 +76,9 @@ public:
 	
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
+
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FOnAbilityInputExecuted OnAbilityInputExecuted;
 
 private:
 

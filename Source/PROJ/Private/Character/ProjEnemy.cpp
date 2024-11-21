@@ -7,7 +7,6 @@
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "AbilitySystem/ProjAttributeSet.h"
 #include "BSTurnBasedCombat/BaseCharacter.h"
-#include "BSTurnBasedCombat/TurnManager.h"
 #include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PROJ/PROJ.h"
