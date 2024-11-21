@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "Player/Controllers/ArenaPlayerController.h"
 #include "UnitBase.generated.h"
 
 
@@ -75,6 +76,9 @@ public:
 	
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
+
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FOnAbilityInputExecuted OnAbilityInputExecuted;
 
 private:
 
