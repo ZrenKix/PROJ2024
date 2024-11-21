@@ -31,12 +31,18 @@
 			"Enabled": true
 		},
 		{
+<<<<<<< HEAD
 			"Name": "FMODStudio",
 			"Enabled": true
 		},
 		{
 			"Name": "FMODStudioNiagara",
 			"Enabled": true
+=======
+			"Name": "PaperZD",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/c4b43502026047d89296cd7bffd92828"
+>>>>>>> main
 		}
 	],
 	"TargetPlatforms": [
