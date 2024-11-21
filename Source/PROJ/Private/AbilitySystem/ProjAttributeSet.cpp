@@ -45,6 +45,7 @@ void UProjAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	if(Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+		UE_LOG(LogTemp, Display, TEXT("New value %f"), NewValue);
 	}
 	else if(Attribute == GetManaAttribute())
 	{
