@@ -109,6 +109,7 @@ int32 AProjEnemy::GetPlayerLevel()
 
 void AProjEnemy::Die()
 {
+	//ArenaManager->EnemyUnits.Remove(this);
 	SetLifeSpan(LifeSpan);
 	Super::Die();
 }
