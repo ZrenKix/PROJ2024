@@ -31,7 +31,7 @@ public:
 	virtual bool IsDead_Implementation() const override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int MaxHealth = 3;
+	int MaxHealth = 10;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int CurrentHealth = MaxHealth;
 
