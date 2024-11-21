@@ -41,6 +41,10 @@ void AProjEnemy::BeginPlay()
 	{
 		DBUserWidget->SetWidgetController(this);
 	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No widget found"));
+	}
 
 	if(const UProjAttributeSet* AS = CastChecked<UProjAttributeSet>(AttributeSet))
 	{
