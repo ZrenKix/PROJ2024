@@ -71,9 +71,6 @@ void AProjEnemy::BeginPlay()
 		OnHealthChanged.Broadcast(AS->GetHealth());
 		OnMaxHealthChanged.Broadcast(AS->GetMaxHealth());
 	}
-
-	ArenaManager = GetWorld()->GetSubsystem<UArenaManager>();
-	HeroList = ArenaManager->GetHeroes();
 }
 
 void AProjEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
@@ -186,6 +183,8 @@ void AProjEnemy::NotifyPlayerOfDeath()
 bool AProjEnemy::ActionTurn()
 {
 	// Randomly selects a hero from the herolist and sets it to Target.
+	ArenaManager = GetWorld()->GetSubsystem<UArenaManager>();
+	HeroList = ArenaManager->GetHeroes();
 	TargetHero = RandomlySelectTarget();
 
 	if (TargetHero == nullptr)
