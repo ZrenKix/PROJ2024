@@ -29,6 +29,9 @@ public:
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual bool IsDead_Implementation() const override;
 
+	int MaxHealth = 3;
+	int CurrentHealth = MaxHealth;
+
 protected:
 	virtual void BeginPlay() override;
 
