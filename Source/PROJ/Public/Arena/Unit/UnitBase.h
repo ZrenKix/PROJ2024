@@ -32,6 +32,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int MaxHealth = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int CurrentHealth = MaxHealth;
 
 protected:
