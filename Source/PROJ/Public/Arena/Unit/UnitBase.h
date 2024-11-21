@@ -30,7 +30,9 @@ public:
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual bool IsDead_Implementation() const override;
 
-	int MaxHealth = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxHealth = 10;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int CurrentHealth = MaxHealth;
 
 protected:
