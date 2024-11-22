@@ -46,12 +46,6 @@ void AHeroUnit::OnRep_PlayerState()
 
 bool AHeroUnit::ActionTurn()
 {
-	// is Hero dead, return false
-	if (IsDead())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is dead"), *GetName());
-		return false;
-	}
 	// Posses this
 	AArenaPlayerController* PC = Cast<AArenaPlayerController>(GetController());
 	PC->Possess(this);

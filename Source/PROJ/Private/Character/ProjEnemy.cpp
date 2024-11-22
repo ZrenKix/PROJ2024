@@ -107,9 +107,11 @@ int32 AProjEnemy::GetPlayerLevel()
 	return Level;
 }
 
+
 void AProjEnemy::Die()
 {
-	//ArenaManager->EnemyUnits.Remove(this);
+	ArenaManager->EnemyUnits.Remove(this);
+	UE_LOG(LogTemp, Display, TEXT("Dies"));
 	SetLifeSpan(LifeSpan);
 	Super::Die();
 }
@@ -164,6 +166,7 @@ void AProjEnemy::Attack(ABaseCharacter* Target)
 		if (!Target->IsAlive())
 		{
 			// Handle the target's death
+			UE_LOG(LogTemp, Warning, TEXT("Calls die"));
 			Target->Die();
 		}
 	}
