@@ -5,9 +5,13 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "DBGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
+#include "BSTurnBasedCombat/MyPlayerController.h"
+#include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 UProjAttributeSet::UProjAttributeSet()
 {
@@ -23,6 +27,7 @@ void UProjAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 
 	// Secondary Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
@@ -40,6 +45,7 @@ void UProjAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	if(Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+		UE_LOG(LogTemp, Display, TEXT("New value %f"), NewValue);
 	}
 	else if(Attribute == GetManaAttribute())
 	{
@@ -67,7 +73,7 @@ void UProjAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		}
 		if(Props.SourceController)
 		{
-			ACharacter* SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
+			Props.SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
 		}
 	}
 
@@ -79,6 +85,8 @@ void UProjAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		Props.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
 	}
 }
+
+
 
 void UProjAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
@@ -93,11 +101,50 @@ void UProjAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
 		UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"), *Props.TargetAvatarActor->GetName(), GetHealth());
 	}
-	else if(Data.EvaluatedData.Attribute == GetManaAttribute())
+	if(Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 	}
+	if(Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
+	{
+		const float LocalIncomingDamage = GetIncomingDamage();
+		SetIncomingDamage(0.f);
+		if(LocalIncomingDamage > 0.f)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Incoming Damage: %f"), LocalIncomingDamage);
+			const float NewHealth = GetHealth() - LocalIncomingDamage;
+			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
+			const bool bFatal = NewHealth <= 0.f;
+			if(bFatal)
+			{
+				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
+				if(CombatInterface)
+				{
+					CombatInterface->Die();
+				}
+			}
+			else
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FDBGameplayTags::Get().Effects_HitReact);
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
+
+			ShowFloatingText(Props, LocalIncomingDamage);
+		}
+	}
+}
+
+void UProjAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
+{
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if(AMyPlayerController* PC = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
+		}
+	}
 }
 
 void UProjAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
@@ -140,6 +187,11 @@ void UProjAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) 
 void UProjAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, Armor, OldArmor);
+}
+
+void UProjAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, BlockChance, OldBlockChance);
 }
 
 

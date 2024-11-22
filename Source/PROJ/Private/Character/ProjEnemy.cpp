@@ -2,14 +2,19 @@
 
 
 #include "Character/ProjEnemy.h"
+
+#include "AbilitySystem/DBAbilitySystemLibrary.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "AbilitySystem/ProjAttributeSet.h"
 #include "BSTurnBasedCombat/BaseCharacter.h"
-#include "BSTurnBasedCombat/TurnManager.h"
 #include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PROJ/PROJ.h"
 #include "UI/Widget/DBUserWidget.h"
+#include "DBGameplayTags.h"
+#include "Arena/ArenaManager.h"
+#include "Arena/Unit/HeroUnit.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AProjEnemy::AProjEnemy()
 {
@@ -30,11 +35,17 @@ AProjEnemy::AProjEnemy()
 void AProjEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
+	UDBAbilitySystemLibrary::GiveStartupAbilites(this, AbilitySystemComponent);
 
 	if(UDBUserWidget* DBUserWidget = Cast<UDBUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
 		DBUserWidget->SetWidgetController(this);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No widget found"));
 	}
 
 	if(const UProjAttributeSet* AS = CastChecked<UProjAttributeSet>(AttributeSet))
@@ -52,10 +63,20 @@ void AProjEnemy::BeginPlay()
 			}
 		);
 		
+		AbilitySystemComponent->RegisterGameplayTagEvent(FDBGameplayTags::Get().Effects_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(
+			this,
+			&AProjEnemy::HitReactTagChanged
+		);
+		
 		OnHealthChanged.Broadcast(AS->GetHealth());
 		OnMaxHealthChanged.Broadcast(AS->GetMaxHealth());
 	}
+}
 
+void AProjEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bHitReacting = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
 }
 
 void AProjEnemy::InitAbilityActorInfo()
@@ -63,6 +84,11 @@ void AProjEnemy::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	InitializeDefaultAttributes();
+}
+
+void AProjEnemy::InitializeDefaultAttributes() const
+{
+	UDBAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
 }
 
 void AProjEnemy::OnTargeted_Implementation()
@@ -81,8 +107,12 @@ int32 AProjEnemy::GetPlayerLevel()
 	return Level;
 }
 
-
-
+void AProjEnemy::Die()
+{
+	//ArenaManager->EnemyUnits.Remove(this);
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
 
 
 //----------------------------------------------------
@@ -139,32 +169,6 @@ void AProjEnemy::Attack(ABaseCharacter* Target)
 	}
 }
 
-
-void AProjEnemy::Die()
-{
-	// Log that the enemy has died
-	UE_LOG(LogTemp, Log, TEXT("%s has died."), *GetName());
-
-	// Play death animation or particle effects if any
-	// For example, you can trigger an animation montage or particle effect here
-
-	// Disable collision and hide the enemy
-	SetActorEnableCollision(false);
-	SetActorHiddenInGame(true);
-
-	// Optionally, destroy the enemy after some time to allow animations to play
-	SetLifeSpan(2.0f); // Destroy after 2 seconds
-
-	// Notify the TurnManager to remove this enemy from the TurnOrder
-	if (ATurnManager* TurnManager = Cast<ATurnManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ATurnManager::StaticClass())))
-	{
-		TurnManager->RemoveActorFromTurnOrder(this);
-	}
-
-	// Notify the player
-	NotifyPlayerOfDeath();
-}
-
 void AProjEnemy::NotifyPlayerOfDeath()
 {
 	// Display a message to the player
@@ -175,6 +179,47 @@ void AProjEnemy::NotifyPlayerOfDeath()
 	}
 
 	// Optionally, you can implement more sophisticated UI feedback here
+}
+
+bool AProjEnemy::ActionTurn()
+{
+	// Randomly selects a hero from the herolist and sets it to Target.
+	ArenaManager = GetWorld()->GetSubsystem<UArenaManager>();
+	HeroList = ArenaManager->GetHeroes();
+	TargetHero = RandomlySelectTarget();
+
+	if (TargetHero == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Target is null"));
+		return true;
+	}
+
+	// Attack target.
+	UE_LOG(LogTemp, Warning, TEXT("Deal damage to: %s. HP: %i"), *TargetHero->GetName(), TargetHero->CurrentHealth);
+	TargetHero->CurrentHealth--;
+	UE_LOG(LogTemp, Warning, TEXT("New HP: %i"), TargetHero->CurrentHealth);
+
+	OnAbilityInputExecuted.Broadcast(this);
+
+	return true;
+}
+
+AHeroUnit* AProjEnemy::RandomlySelectTarget()
+{
+	// Check that HeroList is not empty
+	if (!HeroList.IsEmpty())
+	{
+		// Generate a random number between 0 and 2. This is because the hero party will contain 3 targets max.
+		int RandomInt = FMath::RandRange(0, HeroList.Num() - 1);
+
+		//UE_LOG(LogTemp, Display, TEXT("Selected hero: %s"), HeroList[RandomInt]);
+
+		// Returns a randomly selected hero from HeroList.
+		return HeroList[RandomInt];
+	}
+	// If HeroList is empty.
+	UE_LOG(LogTemp, Warning, TEXT("HeroList is empty!"));
+	return nullptr;
 }
 
 bool AProjEnemy::IsAlive() const

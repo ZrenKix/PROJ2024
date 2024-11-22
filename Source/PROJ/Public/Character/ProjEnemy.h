@@ -6,8 +6,10 @@
 #include "Arena/Unit/UnitBase.h"
 #include "Interaction/TargetInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "ProjEnemy.generated.h"
 
+class UArenaManager;
 class UWidgetComponent;
 /**
  * 
@@ -31,11 +33,28 @@ public:
 	bool IsAlive() const;
 
 	void Attack(class ABaseCharacter* Target);
-	
-	void Die();
 	void NotifyPlayerOfDeath();
 
+	UFUNCTION(BlueprintCallable)
+	virtual bool ActionTurn() override;
+
+	AHeroUnit* RandomlySelectTarget();
+
+	AHeroUnit* TargetHero;
+
 	/** TILLFÄLLIGT SLUT */
+
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool bHitReacting = false;
+
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	float BaseWalkSpeed = 250.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
+	float LifeSpan = 5.f;
+
 	
 	/** ITargetInterface */
 	// Override interface functions
@@ -45,7 +64,8 @@ public:
 	
 	/** ICombatInterface */
 	virtual int32 GetPlayerLevel() override;
-	/** End ITargetInterface */
+	virtual void Die() override;
+	/** End ICombatInterface */
 
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnHealthChanged;
@@ -56,10 +76,20 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
+	virtual void InitializeDefaultAttributes() const override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
 	int32 Level = 1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
+
+	UPROPERTY(VisibleAnywhere)
+	UArenaManager* ArenaManager;
+	
+	TArray<AHeroUnit*> HeroList;	// List containing heroes from ArenaManager so the enemy can randomly select one from it.
+
 };

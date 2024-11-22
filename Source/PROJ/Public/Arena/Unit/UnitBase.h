@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
+#include "Player/Controllers/ArenaPlayerController.h"
 #include "UnitBase.generated.h"
 
 
@@ -21,6 +22,18 @@ class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface, pu
 
 public:
 	AUnitBase();
+
+	virtual void Die() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
+	virtual AActor* GetAvatar_Implementation() override;
+	virtual bool IsDead_Implementation() const override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxHealth = 10;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int CurrentHealth = MaxHealth;
 
 protected:
 	virtual void BeginPlay() override;
@@ -46,11 +59,14 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Combat")
 	FVector PlayerLocation;
-
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool bDead = false;
+	
 	virtual FVector GetPlayerLocation() override;
 
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 
 
 public:
@@ -62,6 +78,9 @@ public:
 	
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
+
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FOnAbilityInputExecuted OnAbilityInputExecuted;
 
 private:
 

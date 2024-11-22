@@ -28,7 +28,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
-private:
+protected:
 	UPROPERTY(EditAnywhere, Category = "Input Mapping")
 	TObjectPtr<UInputMappingContext> ProjContext;
 
@@ -39,12 +39,15 @@ private:
 
 	void CursorTrace();
 
-	TScriptInterface<ITargetInterface> LastTarget;
-	TScriptInterface<ITargetInterface> ThisTarget;
+	// The currently highlighted target
+	UPROPERTY()
+	AActor* ThisTarget = nullptr;
+	//TScriptInterface<ITargetInterface> LastTarget;
+	//TScriptInterface<ITargetInterface> ThisTarget;
 	FHitResult CursorHitResult;
 
-	void AbilityInputTagPressed(FGameplayTag InputTag);
-	void AbilityInputTagReleased(FGameplayTag InputTag);
+	virtual void AbilityInputTagPressed(FGameplayTag InputTag);
+	virtual void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
