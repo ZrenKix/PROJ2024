@@ -9,6 +9,7 @@
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "ProjEnemy.generated.h"
 
+class UArenaManager;
 class UWidgetComponent;
 /**
  * 
@@ -33,6 +34,13 @@ public:
 
 	void Attack(class ABaseCharacter* Target);
 	void NotifyPlayerOfDeath();
+
+	UFUNCTION(BlueprintCallable)
+	virtual bool ActionTurn() override;
+
+	AHeroUnit* RandomlySelectTarget();
+
+	AHeroUnit* TargetHero;
 
 	/** TILLFÄLLIGT SLUT */
 
@@ -78,5 +86,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
+
+	UPROPERTY(VisibleAnywhere)
+	UArenaManager* ArenaManager;
+	
+	TArray<AHeroUnit*> HeroList;	// List containing heroes from ArenaManager so the enemy can randomly select one from it.
 
 };

@@ -46,7 +46,7 @@ protected:
 	//TScriptInterface<ITargetInterface> ThisTarget;
 	FHitResult CursorHitResult;
 
-	void AbilityInputTagPressed(FGameplayTag InputTag);
+	virtual void AbilityInputTagPressed(FGameplayTag InputTag);
 	virtual void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 

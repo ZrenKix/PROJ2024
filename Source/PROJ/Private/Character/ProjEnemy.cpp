@@ -12,6 +12,8 @@
 #include "PROJ/PROJ.h"
 #include "UI/Widget/DBUserWidget.h"
 #include "DBGameplayTags.h"
+#include "Arena/ArenaManager.h"
+#include "Arena/Unit/HeroUnit.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 AProjEnemy::AProjEnemy()
@@ -41,6 +43,10 @@ void AProjEnemy::BeginPlay()
 	{
 		DBUserWidget->SetWidgetController(this);
 	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No widget found"));
+	}
 
 	if(const UProjAttributeSet* AS = CastChecked<UProjAttributeSet>(AttributeSet))
 	{
@@ -65,7 +71,6 @@ void AProjEnemy::BeginPlay()
 		OnHealthChanged.Broadcast(AS->GetHealth());
 		OnMaxHealthChanged.Broadcast(AS->GetMaxHealth());
 	}
-
 }
 
 void AProjEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
@@ -104,6 +109,7 @@ int32 AProjEnemy::GetPlayerLevel()
 
 void AProjEnemy::Die()
 {
+	//ArenaManager->EnemyUnits.Remove(this);
 	SetLifeSpan(LifeSpan);
 	Super::Die();
 }
@@ -173,6 +179,47 @@ void AProjEnemy::NotifyPlayerOfDeath()
 	}
 
 	// Optionally, you can implement more sophisticated UI feedback here
+}
+
+bool AProjEnemy::ActionTurn()
+{
+	// Randomly selects a hero from the herolist and sets it to Target.
+	ArenaManager = GetWorld()->GetSubsystem<UArenaManager>();
+	HeroList = ArenaManager->GetHeroes();
+	TargetHero = RandomlySelectTarget();
+
+	if (TargetHero == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Target is null"));
+		return true;
+	}
+
+	// Attack target.
+	UE_LOG(LogTemp, Warning, TEXT("Deal damage to: %s. HP: %i"), *TargetHero->GetName(), TargetHero->CurrentHealth);
+	TargetHero->CurrentHealth--;
+	UE_LOG(LogTemp, Warning, TEXT("New HP: %i"), TargetHero->CurrentHealth);
+
+	OnAbilityInputExecuted.Broadcast(this);
+
+	return true;
+}
+
+AHeroUnit* AProjEnemy::RandomlySelectTarget()
+{
+	// Check that HeroList is not empty
+	if (!HeroList.IsEmpty())
+	{
+		// Generate a random number between 0 and 2. This is because the hero party will contain 3 targets max.
+		int RandomInt = FMath::RandRange(0, HeroList.Num() - 1);
+
+		//UE_LOG(LogTemp, Display, TEXT("Selected hero: %s"), HeroList[RandomInt]);
+
+		// Returns a randomly selected hero from HeroList.
+		return HeroList[RandomInt];
+	}
+	// If HeroList is empty.
+	UE_LOG(LogTemp, Warning, TEXT("HeroList is empty!"));
+	return nullptr;
 }
 
 bool AProjEnemy::IsAlive() const
