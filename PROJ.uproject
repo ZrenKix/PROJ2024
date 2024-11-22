@@ -14,7 +14,8 @@
 				"UMG",
 				"CoreUObject",
 				"AIModule",
-				"EnhancedInput"
+				"EnhancedInput",
+				"PaperZD"
 			]
 		}
 	],
