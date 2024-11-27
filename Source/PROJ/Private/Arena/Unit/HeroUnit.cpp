@@ -92,6 +92,16 @@ void AHeroUnit::InitAbilityActorInfo()
 	}
 }
 
+bool AHeroUnit::IsDead() const
+{
+	if (AttributeSet)
+	{
+		return Cast<UProjAttributeSet>(AttributeSet)->GetHealth() <= 0;
+	}
+	UE_LOG(LogTemp, Error, TEXT("%s: IsDead() failed to get attribute set"), *GetName());
+	return false;
+}
+
 int32 AHeroUnit::GetPlayerLevel()
 {
 	const AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
