@@ -33,6 +33,16 @@ void AUnitBase::MulticastHandleDeath_Implementation()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+AActor* AUnitBase::GetAvatar_Implementation()
+{
+	return this;
+}
+
+bool AUnitBase::IsDead_Implementation() const
+{
+	return bDead;
+}
+
 void AUnitBase::BeginPlay()
 {
 	Super::BeginPlay();

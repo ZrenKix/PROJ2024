@@ -27,6 +27,7 @@ void UProjAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 
 	// Secondary Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
@@ -44,6 +45,7 @@ void UProjAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	if(Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+		UE_LOG(LogTemp, Display, TEXT("New value %f"), NewValue);
 	}
 	else if(Attribute == GetManaAttribute())
 	{
@@ -185,6 +187,11 @@ void UProjAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) 
 void UProjAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, Armor, OldArmor);
+}
+
+void UProjAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, BlockChance, OldBlockChance);
 }
 
 

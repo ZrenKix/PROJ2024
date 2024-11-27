@@ -55,12 +55,13 @@ void AProjPlayerController::CursorTrace()
 			ITargetInterface::Execute_OnTargeted(ThisTarget);
 		}
 	}
-	
 }
 
 void AProjPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	if(GetAbilitySystemComponent() == nullptr) return;
+	GetAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 }
 
 void AProjPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)

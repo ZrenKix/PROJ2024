@@ -23,32 +23,39 @@ AHeroUnit::AHeroUnit()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	
 }
 
 void AHeroUnit::PossessedBy(AController* NewController)
 {
-	InitAbilityActorInfo();
-	UE_LOG(LogTemp, Warning, TEXT("PossessedBy AHeroUnit"));
 	Super::PossessedBy(NewController);
+
+	// Init Ability actor info for the server
+	InitAbilityActorInfo();
+	AddDefaultAbilities();
 }
 
 void AHeroUnit::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
-	
+
+	// Init Ability actor info for the client
 	InitAbilityActorInfo();
 }
 
 bool AHeroUnit::ActionTurn()
 {
-	if (IsDead())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is dead"), *GetName());
-		return false;
-	}
+	// Posses this
+	AArenaPlayerController* PC = Cast<AArenaPlayerController>(GetController());
+	PC->Possess(this);
 	
+	// Stuff
 	UE_LOG(LogTemp, Warning, TEXT("HeroUnit::ActionTurn"));
-
+	FPlatformProcess::Sleep(2);
+	
+	// Unposses current
+	PC->UnPossess();
 	return true;
 }
 
@@ -69,16 +76,8 @@ void AHeroUnit::OnDeath()
 
 void AHeroUnit::InitAbilityActorInfo()
 {
-	UE_LOG(LogTemp, Display, TEXT("InitAbilityActorInfo"));
-	AProjPlayerState* ProjPlayerState = GetWorld()->GetFirstPlayerController()->GetPlayerState<AProjPlayerState>();
-	if (ensure(ProjPlayerState))
-	{
-		UE_LOG(LogTemp, Display, TEXT("Success"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("ProjPlayerState is null! InitAbilityActorInfo failed."));
-	}
+	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
+	check(ProjPlayerState);
 	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
 	Cast<UProjAbilitySystemComponent>(ProjPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = ProjPlayerState->GetAbilitySystemComponent();
@@ -91,30 +90,6 @@ void AHeroUnit::InitAbilityActorInfo()
 			PlayerHUD->InitOverlay(PlayerController, ProjPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-}
-
-void AHeroUnit::BeginPlay()
-{
-	InitAbilityActorInfo();
-	AddDefaultAbilities();
-
-	if (AttributeSet)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has AttributeSet"), *GetName());
-	} else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is missing AttributeSet"), *GetName());
-	}
-	
-	if (AbilitySystemComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has AbilitySystemComponent"), *GetName());
-	} else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is missing AbilitySystemComponent"), *GetName());
-	}
-	
-	Super::BeginPlay();
 }
 
 int32 AHeroUnit::GetPlayerLevel()

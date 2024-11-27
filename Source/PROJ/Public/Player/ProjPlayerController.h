@@ -46,8 +46,8 @@ protected:
 	//TScriptInterface<ITargetInterface> ThisTarget;
 	FHitResult CursorHitResult;
 
-	void AbilityInputTagPressed(FGameplayTag InputTag);
-	void AbilityInputTagReleased(FGameplayTag InputTag);
+	virtual void AbilityInputTagPressed(FGameplayTag InputTag);
+	virtual void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
