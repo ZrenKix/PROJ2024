@@ -23,7 +23,7 @@ private:
 	
 
 public:
-	virtual void BeginPlay() override;
+	//virtual void BeginPlay() override;
 	
 	bool IsDead() const
 	{
@@ -36,7 +36,7 @@ public:
 	virtual void OnRep_PlayerState() override;
 
 	virtual bool ActionTurn() override;
-	void OnActionTurnEnd();
+	//void OnActionTurnEnd();
 	virtual int GainXp(int Amount) override;
 	virtual bool LevelUp() override;
 	virtual void OnDeath() override;
