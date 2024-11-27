@@ -79,6 +79,9 @@ public:
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Unit Image")
+	UTexture2D* Image;
+
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 	FOnAbilityInputExecuted OnAbilityInputExecuted;
 
