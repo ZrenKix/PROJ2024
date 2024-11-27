@@ -15,7 +15,8 @@
 				"CoreUObject",
 				"AIModule",
 				"EnhancedInput",
-				"PaperZD"
+				"PaperZD",
+				"UnrealEd"
 			]
 		}
 	],
