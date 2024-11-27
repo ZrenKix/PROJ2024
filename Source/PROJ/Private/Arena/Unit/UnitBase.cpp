@@ -4,7 +4,6 @@
 #include "Arena/Unit//UnitBase.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
-#include "AbilitySystem/ProjAttributeSet.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PROJ/PROJ.h"
