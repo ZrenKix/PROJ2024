@@ -48,7 +48,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
-
+	
 	void AddDefaultAbilities();
 
 	UPROPERTY(VisibleAnywhere)
