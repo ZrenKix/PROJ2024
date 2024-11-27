@@ -23,10 +23,7 @@ private:
 	
 
 public:
-	bool IsDead() const
-	{
-		return Cast<UProjAttributeSet>(AttributeSet)->GetHealth() <= 0;
-	}
+	bool IsDead() const;
 	
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
