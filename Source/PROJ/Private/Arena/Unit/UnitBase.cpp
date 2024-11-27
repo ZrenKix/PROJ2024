@@ -54,7 +54,6 @@ void AUnitBase::InitAbilityActorInfo()
 
 void AUnitBase::AddDefaultAbilities()
 {
-
 	UProjAbilitySystemComponent* UnitASC = CastChecked<UProjAbilitySystemComponent>(AbilitySystemComponent);
 	if(!HasAuthority()) return;
 
