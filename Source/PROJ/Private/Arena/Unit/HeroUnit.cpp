@@ -44,19 +44,8 @@ void AHeroUnit::BeginPlay()
 }
 
 bool AHeroUnit::ActionTurn()
-{
+{	
 	OnActionTurn.Broadcast();
-	
-	// Posses this
-	AArenaPlayerController* PC = Cast<AArenaPlayerController>(GetController());
-	PC->Possess(this);
-	
-	// Stuff
-	UE_LOG(LogTemp, Warning, TEXT("HeroUnit::ActionTurn"));
-	FPlatformProcess::Sleep(2);
-	
-	// Unposses current
-	PC->UnPossess();
 	return true;
 }
 
