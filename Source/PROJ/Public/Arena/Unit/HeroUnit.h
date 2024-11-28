@@ -23,14 +23,9 @@ private:
 	
 
 public:
-	bool IsDead() const
-	{
-		return Cast<UProjAttributeSet>(AttributeSet)->GetHealth() <= 0;
-	}
+	bool IsDead() const;
 	
-	virtual void PossessedBy(AController* NewController) override;
-	virtual void OnRep_PlayerState() override;
-
+	virtual void BeginPlay() override;
 	virtual bool ActionTurn() override;
 	virtual int GainXp(int Amount) override;
 	virtual bool LevelUp() override;

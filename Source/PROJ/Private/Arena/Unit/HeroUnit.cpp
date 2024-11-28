@@ -15,6 +15,14 @@
 
 AHeroUnit::AHeroUnit()
 {
+
+	AbilitySystemComponent = CreateDefaultSubobject<UProjAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal); // Kolla https://imgur.com/a/qExGmrP för mer info
+
+
+	AttributeSet = CreateDefaultSubobject<UProjAttributeSet>(TEXT("AttributeSet"));
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 400.0f, 0.0f);
 	GetCharacterMovement()->bConstrainToPlane = true;
@@ -27,21 +35,11 @@ AHeroUnit::AHeroUnit()
 	
 }
 
-void AHeroUnit::PossessedBy(AController* NewController)
+void AHeroUnit::BeginPlay()
 {
-	Super::PossessedBy(NewController);
-
-	// Init Ability actor info for the server
+	Super::BeginPlay();
 	InitAbilityActorInfo();
 	AddDefaultAbilities();
-}
-
-void AHeroUnit::OnRep_PlayerState()
-{
-	Super::OnRep_PlayerState();
-
-	// Init Ability actor info for the client
-	InitAbilityActorInfo();
 }
 
 bool AHeroUnit::ActionTurn()
@@ -76,20 +74,19 @@ void AHeroUnit::OnDeath()
 
 void AHeroUnit::InitAbilityActorInfo()
 {
-	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
-	check(ProjPlayerState);
-	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
-	Cast<UProjAbilitySystemComponent>(ProjPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
-	AbilitySystemComponent = ProjPlayerState->GetAbilitySystemComponent();
-	AttributeSet = ProjPlayerState->GetAttributeSet();
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	InitializeDefaultAttributes();
+}
 
-	if(AProjPlayerController* PlayerController = Cast<AProjPlayerController>(GetController()))
+bool AHeroUnit::IsDead() const
+{
+	if (AttributeSet)
 	{
-		if(APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD()))
-		{
-			PlayerHUD->InitOverlay(PlayerController, ProjPlayerState, AbilitySystemComponent, AttributeSet);
-		}
+		return Cast<UProjAttributeSet>(AttributeSet)->GetHealth() <= 0;
 	}
+	UE_LOG(LogTemp, Error, TEXT("%s: IsDead() failed to get attribute set"), *GetName());
+	return false;
 }
 
 int32 AHeroUnit::GetPlayerLevel()
