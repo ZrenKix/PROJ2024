@@ -4,11 +4,11 @@
 
 #include "AbilitySystemInterface.h"
 #include "CoreMinimal.h"
+#include "Arena/DialogueCondition.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "Player/Controllers/ArenaPlayerController.h"
 #include "UnitBase.generated.h"
-
 
 class UGameplayEffect;
 class UAttributeSet;
@@ -34,6 +34,9 @@ public:
 	int MaxHealth = 10;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int CurrentHealth = MaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FDialogueCondition DialogueEntry;
 
 protected:
 	virtual void BeginPlay() override;
