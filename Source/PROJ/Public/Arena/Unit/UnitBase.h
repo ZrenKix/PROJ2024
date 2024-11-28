@@ -4,16 +4,18 @@
 
 #include "AbilitySystemInterface.h"
 #include "CoreMinimal.h"
+#include "Arena/DialogueCondition.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "Player/Controllers/ArenaPlayerController.h"
 #include "UnitBase.generated.h"
 
-
 class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
 class UGameplayAbility;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnActionTurnDelegate);
 
 UCLASS()
 class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -35,6 +37,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int CurrentHealth = MaxHealth;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FDialogueCondition DialogueEntry;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnActionTurnDelegate OnActionTurn;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -48,7 +56,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
 	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
-
+	
 	void AddDefaultAbilities();
 
 	UPROPERTY(VisibleAnywhere)
