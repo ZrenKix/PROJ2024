@@ -40,6 +40,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FDialogueCondition DialogueEntry;
 
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnActionTurnDelegate OnActionTurn;
+
 protected:
 	virtual void BeginPlay() override;
 
