@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
+#include "Arena/ArenaManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Math/UnitConversion.h"
@@ -15,6 +16,14 @@
 
 AHeroUnit::AHeroUnit()
 {
+
+	AbilitySystemComponent = CreateDefaultSubobject<UProjAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal); // Kolla https://imgur.com/a/qExGmrP för mer info
+
+
+	AttributeSet = CreateDefaultSubobject<UProjAttributeSet>(TEXT("AttributeSet"));
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 400.0f, 0.0f);
 	GetCharacterMovement()->bConstrainToPlane = true;
@@ -27,25 +36,17 @@ AHeroUnit::AHeroUnit()
 	
 }
 
-void AHeroUnit::PossessedBy(AController* NewController)
+void AHeroUnit::BeginPlay()
 {
-	Super::PossessedBy(NewController);
-
-	// Init Ability actor info for the server
+	Super::BeginPlay();
 	InitAbilityActorInfo();
 	AddDefaultAbilities();
 }
 
-void AHeroUnit::OnRep_PlayerState()
-{
-	Super::OnRep_PlayerState();
-
-	// Init Ability actor info for the client
-	InitAbilityActorInfo();
-}
-
 bool AHeroUnit::ActionTurn()
 {
+	OnActionTurn.Broadcast();
+	
 	// Posses this
 	AArenaPlayerController* PC = Cast<AArenaPlayerController>(GetController());
 	PC->Possess(this);
@@ -76,20 +77,9 @@ void AHeroUnit::OnDeath()
 
 void AHeroUnit::InitAbilityActorInfo()
 {
-	AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
-	check(ProjPlayerState);
-	ProjPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ProjPlayerState, this);
-	Cast<UProjAbilitySystemComponent>(ProjPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
-	AbilitySystemComponent = ProjPlayerState->GetAbilitySystemComponent();
-	AttributeSet = ProjPlayerState->GetAttributeSet();
-
-	if(AProjPlayerController* PlayerController = Cast<AProjPlayerController>(GetController()))
-	{
-		if(APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD()))
-		{
-			PlayerHUD->InitOverlay(PlayerController, ProjPlayerState, AbilitySystemComponent, AttributeSet);
-		}
-	}
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	InitializeDefaultAttributes();
 }
 
 bool AHeroUnit::IsDead() const
