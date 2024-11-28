@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
+#include "Arena/ArenaManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Math/UnitConversion.h"
@@ -44,6 +45,8 @@ void AHeroUnit::BeginPlay()
 
 bool AHeroUnit::ActionTurn()
 {
+	OnActionTurn.Broadcast();
+	
 	// Posses this
 	AArenaPlayerController* PC = Cast<AArenaPlayerController>(GetController());
 	PC->Possess(this);

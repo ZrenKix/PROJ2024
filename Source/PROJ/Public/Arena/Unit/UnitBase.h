@@ -15,6 +15,8 @@ class UAttributeSet;
 class UAbilitySystemComponent;
 class UGameplayAbility;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnActionTurnDelegate);
+
 UCLASS()
 class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
@@ -37,6 +39,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FDialogueCondition DialogueEntry;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnActionTurnDelegate OnActionTurn;
 
 protected:
 	virtual void BeginPlay() override;
