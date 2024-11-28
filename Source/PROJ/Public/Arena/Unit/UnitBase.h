@@ -87,8 +87,20 @@ public:
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Unit Image")
-	UTexture2D* Image;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Card Image")
+	UTexture2D* CardImage;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Queue Image")
+    UTexture2D* QueueImage;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Queue Selected Image")
+    UTexture2D* QueueSelectedImage;
+    	
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Border Image")
+    UTexture2D* BorderImage;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Border Selected Image")
+    UTexture2D* BorderSelectedImage;
 
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 	FOnAbilityInputExecuted OnAbilityInputExecuted;
