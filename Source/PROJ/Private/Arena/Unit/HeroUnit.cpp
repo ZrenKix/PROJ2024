@@ -77,14 +77,6 @@ void AHeroUnit::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	Cast<UProjAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 	InitializeDefaultAttributes();
-
-	if(AArenaPlayerController* PlayerController = Cast<AArenaPlayerController>(GetController()))
-	{
-		if(APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD()))
-		{
-			PlayerHUD->InitOverlay(PlayerController, GetPlayerState(), AbilitySystemComponent, AttributeSet);
-		}
-	}
 }
 
 bool AHeroUnit::IsDead() const
