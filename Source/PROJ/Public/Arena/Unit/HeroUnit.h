@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/ProjAttributeSet.h"
 #include "Arena/Unit/UnitBase.h"
 #include "HeroUnit.generated.h"
 
