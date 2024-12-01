@@ -2,7 +2,6 @@
 
 
 #include "AbilitySystem/ProjAttributeSet.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "DBGameplayTags.h"
@@ -142,7 +141,7 @@ void UProjAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 	{
 		if(AMyPlayerController* PC = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
 		{
-			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
+			//PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 		}
 	}
 }
