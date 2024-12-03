@@ -11,6 +11,7 @@
 #include "BSTurnBasedCombat/MyPlayerController.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Player/Controllers/ArenaPlayerController.h"
 
 UProjAttributeSet::UProjAttributeSet()
 {
@@ -139,7 +140,7 @@ void UProjAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 {
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
-		if(AMyPlayerController* PC = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
+		if(AArenaPlayerController* PC = Cast<AArenaPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
 		{
 			//PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 		}
