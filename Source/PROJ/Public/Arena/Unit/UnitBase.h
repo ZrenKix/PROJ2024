@@ -32,12 +32,20 @@ public:
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual bool IsDead_Implementation() const override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
+	FString UnitName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
 	int MaxHealth = 10;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
 	int CurrentHealth = MaxHealth;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
+	int MaxMana = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
+	int CurrentMana = MaxMana;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
 	FDialogueCondition DialogueEntry;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
@@ -86,6 +94,9 @@ public:
 	
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
+
+	UFUNCTION(BlueprintCallable, Category="Unit Attributes")
+	void ChangeMana(int value);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Card Image")
 	UTexture2D* CardImage;
