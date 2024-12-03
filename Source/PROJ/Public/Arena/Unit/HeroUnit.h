@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// © 2024 Choklad4Life. All rights reserved.
 
 #pragma once
 
@@ -6,9 +6,6 @@
 #include "Arena/Unit/UnitBase.h"
 #include "HeroUnit.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class PROJ_API AHeroUnit : public AUnitBase
 {

@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Arena/Unit//UnitBase.h"
+#include "Arena/Unit/UnitBase.h"
 #include "AbilitySystemComponent.h"
+#include "VectorUtil.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -99,6 +100,12 @@ int AUnitBase::GainXp(int Amount)
 bool AUnitBase::LevelUp()
 {
 	return true;
+}
+
+void AUnitBase::ChangeMana(int value)
+{
+	CurrentHealth += value;
+	CurrentMana = FMath::Clamp(CurrentMana, 0, MaxMana);
 }
 
 
