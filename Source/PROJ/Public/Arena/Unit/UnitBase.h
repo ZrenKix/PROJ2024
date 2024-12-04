@@ -78,6 +78,9 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly)
 	bool bDead = false;
+
+	UPROPERTY(BlueprintReadWrite, Category="Combat")
+	bool bIsTaunted= false;
 	
 	virtual FVector GetPlayerLocation() override;
 
