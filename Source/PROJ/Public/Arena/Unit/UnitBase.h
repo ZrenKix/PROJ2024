@@ -95,6 +95,9 @@ public:
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
 
+	UFUNCTION(BlueprintCallable, Category="Combat")
+	bool EnoughManaFor(int value) const;
+
 	UFUNCTION(BlueprintCallable, Category="Unit Attributes")
 	void ChangeMana(int value);
 
