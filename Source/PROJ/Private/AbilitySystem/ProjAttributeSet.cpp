@@ -8,7 +8,6 @@
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
-#include "BSTurnBasedCombat/MyPlayerController.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/Controllers/ArenaPlayerController.h"
