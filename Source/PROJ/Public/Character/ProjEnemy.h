@@ -66,12 +66,6 @@ public:
 	virtual int32 GetPlayerLevel() override;
 	virtual void Die() override;
 	/** End ICombatInterface */
-
-	UPROPERTY(BlueprintAssignable)
-	FOnAttributeChangedSignature OnHealthChanged;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnAttributeChangedSignature OnMaxHealthChanged;
 	
 protected:
 	virtual void BeginPlay() override;
