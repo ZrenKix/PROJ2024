@@ -1,5 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// © 2024 Choklad4Life. All rights reserved.
 
 #include "Arena/Unit/HeroUnit.h"
 
