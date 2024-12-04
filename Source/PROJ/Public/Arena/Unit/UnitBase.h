@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "Player/Controllers/ArenaPlayerController.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "UnitBase.generated.h"
 
 class UGameplayEffect;
@@ -50,6 +51,13 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnActionTurnDelegate OnActionTurn;
+
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
 
 protected:
 	virtual void BeginPlay() override;
