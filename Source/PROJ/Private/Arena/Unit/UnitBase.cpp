@@ -102,9 +102,14 @@ bool AUnitBase::LevelUp()
 	return true;
 }
 
+bool AUnitBase::EnoughManaFor(int value) const
+{
+	return CurrentMana >= value;
+}
+
 void AUnitBase::ChangeMana(int value)
 {
-	CurrentHealth += value;
+	CurrentMana += value;
 	CurrentMana = FMath::Clamp(CurrentMana, 0, MaxMana);
 }
 
