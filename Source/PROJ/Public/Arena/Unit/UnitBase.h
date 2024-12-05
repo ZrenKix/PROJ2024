@@ -92,6 +92,7 @@ protected:
 	
 	virtual FVector GetPlayerLocation() override;
 
+	UFUNCTION(BlueprintCallable)
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
 	virtual void InitializeDefaultAttributes() const;
 
