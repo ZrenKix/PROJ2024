@@ -1,18 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// © 2024 Choklad4Life. All rights reserved.
 
 #include "Arena/Unit/HeroUnit.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
+#include "AbilitySystem/ProjAttributeSet.h"
 #include "Arena/ArenaManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Math/UnitConversion.h"
-#include "Player/ProjPlayerController.h"
-#include "Player/ProjPlayerState.h"
-#include "Player/Controllers/ArenaPlayerController.h"
-#include "UI/HUD/PlayerHUD.h"
 
 AHeroUnit::AHeroUnit()
 {
@@ -83,7 +77,8 @@ bool AHeroUnit::IsDead() const
 
 int32 AHeroUnit::GetPlayerLevel()
 {
-	const AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
-	check(ProjPlayerState);
-	return ProjPlayerState->GetPlayerLevel();
+	//const AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
+	//check(ProjPlayerState);
+	//return ProjPlayerState->GetPlayerLevel();
+	return 1;
 }

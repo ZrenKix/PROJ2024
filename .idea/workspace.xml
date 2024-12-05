@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9e547140-5566-42ca-8858-44b9c336a6d5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Content/Maps/ArenaScenes/ArenaScene.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/ArenaScenes/ArenaScene.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/ArenaScenes/Prototyp_1.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/ArenaScenes/Prototyp_1.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/PROJ/Private/Arena/ArenaManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PROJ/Private/Arena/ArenaManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/PROJ/Public/Arena/ArenaManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PROJ/Public/Arena/ArenaManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/projectSettingsUpdater.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,14 +12,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2pR9JEwGpOvQfbKnCrvxBjDmyEG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Linus",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Emma",
     "kotlin-language-version-configured": "true",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
@@ -45,10 +47,17 @@
       <option name="presentableId" value="Default" />
       <updated>1732717946935</updated>
       <workItem from="1732717948318" duration="10000" />
+      <workItem from="1733139502015" duration="48000" />
+      <workItem from="1733230415189" duration="29000" />
+      <workItem from="1733302597407" duration="28000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
 </project>

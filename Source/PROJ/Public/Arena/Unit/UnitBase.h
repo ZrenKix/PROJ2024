@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "Player/Controllers/ArenaPlayerController.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "UnitBase.generated.h"
 
 class UGameplayEffect;
@@ -32,16 +33,31 @@ public:
 	virtual AActor* GetAvatar_Implementation() override;
 	virtual bool IsDead_Implementation() const override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
+	FString UnitName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
 	int MaxHealth = 10;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
 	int CurrentHealth = MaxHealth;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
+	int MaxMana = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
+	int CurrentMana = MaxMana;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Unit")
 	FDialogueCondition DialogueEntry;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnActionTurnDelegate OnActionTurn;
+
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
 
 protected:
 	virtual void BeginPlay() override;
@@ -70,9 +86,13 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly)
 	bool bDead = false;
+
+	UPROPERTY(BlueprintReadWrite, Category="Combat")
+	bool bIsTaunted= false;
 	
 	virtual FVector GetPlayerLocation() override;
 
+	UFUNCTION(BlueprintCallable)
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
 	virtual void InitializeDefaultAttributes() const;
 
@@ -86,6 +106,12 @@ public:
 	
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
+
+	UFUNCTION(BlueprintCallable, Category="Combat")
+	bool EnoughManaFor(int value) const;
+
+	UFUNCTION(BlueprintCallable, Category="Unit Attributes")
+	void ChangeMana(int value);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Card Image")
 	UTexture2D* CardImage;

@@ -15,8 +15,7 @@
 				"CoreUObject",
 				"AIModule",
 				"EnhancedInput",
-				"PaperZD",
-				"UnrealEd"
+				"PaperZD"
 			]
 		}
 	],
@@ -43,6 +42,10 @@
 		},
 		{
 			"Name": "FMODStudioNiagara",
+			"Enabled": true
+		},
+		{
+			"Name": "PCG",
 			"Enabled": true
 		}
 	],
