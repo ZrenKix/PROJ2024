@@ -7,7 +7,6 @@
 #include "AbilitySystem/ProjAttributeSet.h"
 #include "Arena/ArenaManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Player/ProjPlayerState.h"
 
 AHeroUnit::AHeroUnit()
 {
