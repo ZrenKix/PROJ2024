@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "Player/Controllers/ArenaPlayerController.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "UnitBase.generated.h"
 
 class UGameplayEffect;
@@ -51,6 +52,13 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnActionTurnDelegate OnActionTurn;
 
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnMaxHealthChanged;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangedSignature OnHealthChanged;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -78,9 +86,13 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly)
 	bool bDead = false;
+
+	UPROPERTY(BlueprintReadWrite, Category="Combat")
+	bool bIsTaunted= false;
 	
 	virtual FVector GetPlayerLocation() override;
 
+	UFUNCTION(BlueprintCallable)
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
 	virtual void InitializeDefaultAttributes() const;
 
@@ -94,6 +106,9 @@ public:
 	
 	virtual int GainXp(int Amount);
 	virtual bool LevelUp();
+
+	UFUNCTION(BlueprintCallable, Category="Combat")
+	bool EnoughManaFor(int value) const;
 
 	UFUNCTION(BlueprintCallable, Category="Unit Attributes")
 	void ChangeMana(int value);

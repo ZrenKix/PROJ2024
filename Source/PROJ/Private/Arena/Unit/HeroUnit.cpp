@@ -7,7 +7,6 @@
 #include "AbilitySystem/ProjAttributeSet.h"
 #include "Arena/ArenaManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Player/ProjPlayerState.h"
 
 AHeroUnit::AHeroUnit()
 {
@@ -78,7 +77,8 @@ bool AHeroUnit::IsDead() const
 
 int32 AHeroUnit::GetPlayerLevel()
 {
-	const AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
-	check(ProjPlayerState);
-	return ProjPlayerState->GetPlayerLevel();
+	//const AProjPlayerState* ProjPlayerState = GetPlayerState<AProjPlayerState>();
+	//check(ProjPlayerState);
+	//return ProjPlayerState->GetPlayerLevel();
+	return 1;
 }

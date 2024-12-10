@@ -8,7 +8,6 @@
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
-#include "BSTurnBasedCombat/MyPlayerController.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/Controllers/ArenaPlayerController.h"
@@ -28,6 +27,9 @@ void UProjAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 	// Secondary Attributes
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, Armor, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, CriticalHitChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, CriticalHitDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, CriticalHitResistance, COND_None, REPNOTIFY_Always);
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UProjAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
@@ -192,6 +194,19 @@ void UProjAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) cons
 void UProjAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, BlockChance, OldBlockChance);
+}
+
+void UProjAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, CriticalHitChance, OldCriticalHitChance);
+}
+void UProjAttributeSet::OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, CriticalHitDamage, OldCriticalHitDamage);
+}
+void UProjAttributeSet::OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UProjAttributeSet, CriticalHitResistance, OldCriticalHitResistance);
 }
 
 
