@@ -51,6 +51,10 @@
 		{
 			"Name": "MovieRenderPipeline",
 			"Enabled": true
+		},
+		{
+			"Name": "HDRIBackdrop",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
