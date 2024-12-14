@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Arena/Unit/UnitBase.h"
+#include "Interaction/PlayerInterface.h"
 #include "HeroUnit.generated.h"
 
 UCLASS()
-class PROJ_API AHeroUnit : public AUnitBase
+class PROJ_API AHeroUnit : public AUnitBase, public IPlayerInterface
 {
 	GENERATED_BODY()
 
