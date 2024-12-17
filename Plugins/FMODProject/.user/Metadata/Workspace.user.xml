@@ -10,7 +10,6 @@
 	</object>
 	<object class="ProjectSettings" id="{d95247cc-16db-4cba-8013-c18b81107f39}">
 		<property name="openWindows">
-			<value>Audio Bin 1</value>
 			<value>Event Editor 1</value>
 		</property>
 		<property name="windowLayout">

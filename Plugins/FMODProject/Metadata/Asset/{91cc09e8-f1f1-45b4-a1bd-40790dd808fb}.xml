@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="EncodableAsset" id="{97c2cd60-60fd-45c8-a6bc-4f617889e31c}">
+	<object class="EncodableAsset" id="{91cc09e8-f1f1-45b4-a1bd-40790dd808fb}">
 		<property name="assetPath">
-			<value>PlayerParty/Combat/Abilities/</value>
+			<value>PlayerParty/Combat/BasicAttacks/</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{ffc8284e-fe15-423d-846c-6e671f226029}</destination>
