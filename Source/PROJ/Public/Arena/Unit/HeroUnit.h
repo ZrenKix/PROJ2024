@@ -30,6 +30,10 @@ public:
 
 	virtual int32 GetPlayerLevel() override;
 
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FName WeaponTipSocketName;
+	virtual FVector GetCombatSocketLocation() override;
+
 private:
 	int Xp;
 	int RequiredXp;
