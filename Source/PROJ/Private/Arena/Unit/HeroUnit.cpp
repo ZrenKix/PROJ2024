@@ -82,3 +82,8 @@ int32 AHeroUnit::GetPlayerLevel()
 	//return ProjPlayerState->GetPlayerLevel();
 	return 1;
 }
+
+FVector AHeroUnit::GetCombatSocketLocation()
+{
+	return GetMesh()->GetSocketLocation(WeaponTipSocketName);
+}
