@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="EncodableAsset" id="{97c2cd60-60fd-45c8-a6bc-4f617889e31c}">
 		<property name="assetPath">
-			<value>PlayerParty/Abilities/</value>
+			<value>PlayerParty/Combat/Abilities/</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{ffc8284e-fe15-423d-846c-6e671f226029}</destination>

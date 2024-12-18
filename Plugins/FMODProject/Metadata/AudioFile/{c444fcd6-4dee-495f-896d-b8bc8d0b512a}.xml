@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{c444fcd6-4dee-495f-896d-b8bc8d0b512a}">
 		<property name="assetPath">
-			<value>PlayerParty/Abilities/Taunt_Tank.wav</value>
+			<value>PlayerParty/Combat/Abilities/Taunt_Tank.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>
