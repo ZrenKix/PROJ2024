@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "VectorUtil.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
+#include "Arena/ArenaManager.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PROJ/PROJ.h"
@@ -22,12 +23,15 @@ void AUnitBase::Die()
 {
 	MulticastHandleDeath();
 	Death.Broadcast();
+
+	UArenaManager* ArenaManager = GetWorld()->GetSubsystem<UArenaManager>();
+	ArenaManager->RemoveUnit(this);
 }
 
 void AUnitBase::MulticastHandleDeath_Implementation()
 {
-	GetMesh()->SetEnableGravity(true);
-	GetMesh()->SetSimulatePhysics(true);
+	//GetMesh()->SetEnableGravity(true);
+	//GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	

@@ -55,7 +55,6 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnActionTurnDelegate OnActionTurn;
 
-
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 	
