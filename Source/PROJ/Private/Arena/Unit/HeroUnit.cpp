@@ -121,7 +121,7 @@ void AHeroUnit::ToggleEnemyWidget()
 		}
         
 		// Sätt input mode till UI Only
-		FInputModeUIOnly InputMode;
+		FInputModeGameAndUI InputMode;
 		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 		InputMode.SetWidgetToFocus(EnemySettingsWidget->TakeWidget());
 		PC->SetInputMode(InputMode);
