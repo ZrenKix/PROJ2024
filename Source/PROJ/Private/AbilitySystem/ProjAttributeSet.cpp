@@ -125,7 +125,7 @@ void UProjAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				if(CombatInterface)
 				{
 					CombatInterface->Die();
-					Hurt.Broadcast();
+					Death.Broadcast();
 				}
 			}
 			else
