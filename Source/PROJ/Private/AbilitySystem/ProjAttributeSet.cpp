@@ -116,6 +116,7 @@ void UProjAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			UE_LOG(LogTemp, Warning, TEXT("Incoming Damage: %f"), LocalIncomingDamage);
 			const float NewHealth = GetHealth() - LocalIncomingDamage;
 			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+			PlayHurtAnimation();
 
 			const bool bFatal = NewHealth <= 0.f;
 			if(bFatal)

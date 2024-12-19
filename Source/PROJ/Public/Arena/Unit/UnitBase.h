@@ -17,6 +17,7 @@ class UAbilitySystemComponent;
 class UGameplayAbility;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnActionTurnDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 
 UCLASS()
 class PROJ_API AUnitBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -27,6 +28,8 @@ public:
 	AUnitBase();
 
 	virtual void Die() override;
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnDeath Death;
 
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
