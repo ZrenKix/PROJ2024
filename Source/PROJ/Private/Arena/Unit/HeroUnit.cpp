@@ -104,7 +104,7 @@ void AHeroUnit::ToggleEnemyWidget()
 		// Sätt input mode till Game Only
 		FInputModeGameOnly InputMode;
 		PC->SetInputMode(InputMode);
-		PC->bShowMouseCursor = false;
+		//PC->bShowMouseCursor = false;
 		bIsSettingsMenuOpen = false;
 	}
 	else
