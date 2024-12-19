@@ -85,7 +85,7 @@ void AUnitBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, floa
 }
 
 void AUnitBase::InitializeDefaultAttributes() const
-{
+{ 
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
