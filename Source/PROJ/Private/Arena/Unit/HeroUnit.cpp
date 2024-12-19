@@ -6,6 +6,7 @@
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "AbilitySystem/ProjAttributeSet.h"
 #include "Arena/ArenaManager.h"
+#include "Blueprint/UserWidget.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 AHeroUnit::AHeroUnit()
@@ -87,3 +88,46 @@ FVector AHeroUnit::GetCombatSocketLocation()
 {
 	return GetMesh()->GetSocketLocation(WeaponTipSocketName);
 }
+
+void AHeroUnit::ToggleEnemyWidget()
+{
+	APlayerController* PC = GetController<APlayerController>();
+	if (!PC) return;
+
+	if (bIsSettingsMenuOpen)
+	{
+		// Menyn är öppen, stäng den
+		if (EnemySettingsWidget && EnemySettingsWidget->IsInViewport())
+		{
+			EnemySettingsWidget->RemoveFromParent();
+		}
+		// Sätt input mode till Game Only
+		FInputModeGameOnly InputMode;
+		PC->SetInputMode(InputMode);
+		PC->bShowMouseCursor = false;
+		bIsSettingsMenuOpen = false;
+	}
+	else
+	{
+		// Menyn är stängd, öppna den
+		if (!EnemySettingsWidget && EnemySettingsWidgetClass)
+		{
+			EnemySettingsWidget = CreateWidget<UUserWidget>(PC, EnemySettingsWidgetClass);
+		}
+
+		if (EnemySettingsWidget && !EnemySettingsWidget->IsInViewport())
+		{
+			EnemySettingsWidget->AddToViewport();
+		}
+        
+		// Sätt input mode till UI Only
+		FInputModeGameAndUI InputMode;
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputMode.SetWidgetToFocus(EnemySettingsWidget->TakeWidget());
+		PC->SetInputMode(InputMode);
+		PC->bShowMouseCursor = true;
+		bIsSettingsMenuOpen = true;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("ToggleEnemyWidget!"));
+}
+
