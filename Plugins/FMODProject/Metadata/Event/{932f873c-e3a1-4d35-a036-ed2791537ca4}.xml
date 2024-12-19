@@ -5,7 +5,7 @@
 			<value>Ambience_Overworld</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{10d49c9a-8167-468d-b3da-191a703e0c06}</destination>
@@ -140,7 +140,6 @@
 	<object class="MixerBusEffectChain" id="{6daaa153-6246-41d1-a9f4-8044d16b6675}">
 		<relationship name="effects">
 			<destination>{11059f79-08d4-4f00-88d6-183c13142944}</destination>
-			<destination>{107bec77-a915-4cd4-88b9-50d4474dce71}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{f372afdb-6afe-40dc-91d9-112e212fc06c}" />
@@ -152,6 +151,5 @@
 	</object>
 	<object class="MixerBusPanner" id="{13c38621-0888-4ee1-b7af-b3a52d2a28c4}" />
 	<object class="MixerBusFader" id="{11059f79-08d4-4f00-88d6-183c13142944}" />
-	<object class="SpatialiserEffect" id="{107bec77-a915-4cd4-88b9-50d4474dce71}" />
 	<object class="MixerBusFader" id="{549b6c8c-22c7-4574-a07c-04f430da4d8a}" />
 </objects>
