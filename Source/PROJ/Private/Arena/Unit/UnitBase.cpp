@@ -21,6 +21,7 @@ AUnitBase::AUnitBase()
 void AUnitBase::Die()
 {
 	MulticastHandleDeath();
+	Death.Broadcast();
 }
 
 void AUnitBase::MulticastHandleDeath_Implementation()
