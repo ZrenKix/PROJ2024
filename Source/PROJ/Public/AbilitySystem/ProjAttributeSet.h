@@ -13,6 +13,9 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FHurt);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeath);
+
 USTRUCT()
 struct FEffectProperties
 {
@@ -50,8 +53,10 @@ class PROJ_API UProjAttributeSet : public UAttributeSet
 public:
 	UProjAttributeSet();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void PlayHurtAnimation();
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FHurt Hurt;
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FDeath Death;
 	
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
