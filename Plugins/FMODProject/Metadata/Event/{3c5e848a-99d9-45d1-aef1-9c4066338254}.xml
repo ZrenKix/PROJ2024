@@ -112,6 +112,9 @@
 	<object class="MixerBusFader" id="{7c019f8d-fc13-4c5c-9139-e05d1fa25466}" />
 	<object class="MixerBusFader" id="{ca34af8c-ecce-4222-8bc5-f916b8d30b6c}" />
 	<object class="SFXReverbEffect" id="{b9ef39e0-987a-44d0-89e6-a3dffb532db7}">
+		<property name="decayTime">
+			<value>600</value>
+		</property>
 		<property name="highCut">
 			<value>3100</value>
 		</property>
