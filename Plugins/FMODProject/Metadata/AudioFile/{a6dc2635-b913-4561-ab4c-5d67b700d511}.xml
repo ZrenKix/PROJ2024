@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{a6dc2635-b913-4561-ab4c-5d67b700d511}">
 		<property name="assetPath">
-			<value>PlayerParty/Combat/BasicAttacks/BasicAttack_Healer.wav</value>
+			<value>PlayerParty/Abilities/BasicAttack_Healer.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>
