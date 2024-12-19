@@ -104,7 +104,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{0c56e7da-f19b-4828-92f1-670b1710a980}">
 		<property name="volume">
-			<value>-8.5</value>
+			<value>-19.5</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -150,6 +150,7 @@
 		<relationship name="effects">
 			<destination>{32584a40-62a6-4f54-b72f-4733499607a0}</destination>
 			<destination>{42645a4b-f92a-4353-a0de-94215bd511e2}</destination>
+			<destination>{d2c6d0e9-1c0c-4705-951a-cf09ee20f3f7}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{f9f9a910-8e0b-4371-a0a6-1d90aa8caeb1}" />
@@ -157,13 +158,18 @@
 	<object class="MixerBusFader" id="{32584a40-62a6-4f54-b72f-4733499607a0}" />
 	<object class="PitchShifterEffect" id="{42645a4b-f92a-4353-a0de-94215bd511e2}">
 		<property name="pitch">
-			<value>0.669999957</value>
+			<value>0.699999988</value>
 		</property>
 		<property name="fftSize">
-			<value>660</value>
+			<value>880</value>
 		</property>
 		<property name="overlap">
 			<value>6.5999999</value>
+		</property>
+	</object>
+	<object class="LowpassSimpleEffect" id="{d2c6d0e9-1c0c-4705-951a-cf09ee20f3f7}">
+		<property name="cutoff">
+			<value>4600</value>
 		</property>
 	</object>
 </objects>
