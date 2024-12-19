@@ -49,6 +49,10 @@ class PROJ_API UProjAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 public:
 	UProjAttributeSet();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlayHurtAnimation();
+	
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
