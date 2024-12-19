@@ -34,7 +34,16 @@ public:
 	FName WeaponTipSocketName;
 	virtual FVector GetCombatSocketLocation() override;
 
+	UFUNCTION(BlueprintCallable)
+	void ToggleEnemyWidget();
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
+	TSubclassOf<UUserWidget> EnemySettingsWidgetClass;
+	
+	UPROPERTY()
+	UUserWidget* EnemySettingsWidget;
 private:
+	bool bIsSettingsMenuOpen = false; 
 	int Xp;
 	int RequiredXp;
 };
