@@ -26,19 +26,37 @@ void UProjAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 	AbilitiesGivenDelegate.Broadcast(this);
 }
 
+void UProjAbilitySystemComponent::TryActivateAbility(const FGameplayAbilitySpecHandle Handle, bool bAllowRemoteActivation)
+{
+	// Enforce that abilities cannot be activated unless triggered through their input tags
+	UE_LOG(LogTemp, Warning, TEXT("Direct TryActivateAbility call blocked. Use AbilityInputTagPressed instead."));
+}
+
+void UProjAbilitySystemComponent::TryActivateAbilitiesByTag(const FGameplayTagContainer& GameplayTagContainer, bool bAllowRemoteActivation)
+{
+	// Enforce that abilities cannot be activated unless triggered through their input tags
+	UE_LOG(LogTemp, Warning, TEXT("Direct TryActivateAbilitiesByTag call blocked. Use AbilityInputTagPressed instead."));
+}
+
 void UProjAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;
+
 	UE_LOG(LogTemp, Warning, TEXT("Ability Pressed: %s"), *InputTag.ToString());
 	FScopedAbilityListLock ActiveScopeLoc(*this);
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
+			// Only activate abilities that match the input tag
 			AbilitySpecInputPressed(AbilitySpec);
-			if (AbilitySpec.IsActive())
+			if (!AbilitySpec.IsActive())
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Ability is active"));
+				TryActivateAbility(AbilitySpec.Handle, true);
+			}
+			else
+			{
+				// Handle input for active abilities
 				TArray<UGameplayAbility*> AbilityInstances = AbilitySpec.GetAbilityInstances();
 				for (UGameplayAbility* AbilityInstance : AbilityInstances)
 				{
@@ -60,7 +78,7 @@ void UProjAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputT
 			AbilitySpecInputPressed(AbilitySpec);
 			if(!AbilitySpec.IsActive())
 			{
-				TryActivateAbility(AbilitySpec.Handle);
+				TryActivateAbility(AbilitySpec.Handle, true);
 			}
 		}
 	}
