@@ -27,6 +27,8 @@ public:
 	FAbilitiesGiven AbilitiesGivenDelegate;
 
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilites);
+	void TryActivateAbility(FGameplayAbilitySpecHandle Handle, bool bAllowRemoteActivation);
+	void TryActivateAbilitiesByTag(const FGameplayTagContainer& GameplayTagContainer, bool bAllowRemoteActivation);
 	bool bStartupAbilitiesGiven = false;
 	void AbilityInputTagPressed(const FGameplayTag& InputTag);
 
