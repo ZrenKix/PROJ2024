@@ -36,9 +36,25 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleEnemyWidget();
+
+	UFUNCTION(BlueprintCallable)
+	bool HasAttackedThisTurn() const
+	{
+		return bHasAttackedThisTurn;
+	}
+
+	UFUNCTION(BlueprintCallable)
+	void SetHasAttackedThisTurn(bool HasAttackedThisTurn)
+	{
+		this->bHasAttackedThisTurn = HasAttackedThisTurn;
+	}
+	
+	
+	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UI")
 	TSubclassOf<UUserWidget> EnemySettingsWidgetClass;
+	
 	
 	UPROPERTY()
 	UUserWidget* EnemySettingsWidget;
@@ -46,4 +62,6 @@ private:
 	bool bIsSettingsMenuOpen = false; 
 	int Xp;
 	int RequiredXp;
+	
+	bool bHasAttackedThisTurn = false;
 };
