@@ -142,12 +142,9 @@ void UProjAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 void UProjAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
 {
-	if (Props.SourceCharacter != Props.TargetCharacter)
+	if(AArenaPlayerController* PC = Cast<AArenaPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
 	{
-		if(AArenaPlayerController* PC = Cast<AArenaPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
-		{
-			//PC->ShowDamageNumber(Damage, Props.TargetCharacter);
-		}
+		PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 	}
 }
 
