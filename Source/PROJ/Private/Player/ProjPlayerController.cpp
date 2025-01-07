@@ -7,6 +7,7 @@
 #include "GameplayTagContainer.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "Input/DBInputComponent.h"
+#include "Interaction/PlayerInterface.h"
 #include "Interaction/TargetInterface.h"
 
 AProjPlayerController::AProjPlayerController()
@@ -23,38 +24,66 @@ void AProjPlayerController::PlayerTick(float DeltaTime)
 
 void AProjPlayerController::CursorTrace()
 {
-	GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
+    // Perform the cursor trace
+    GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
 
-	if (!CursorHitResult.bBlockingHit)
-	{
-		// Unhighlight the last target if any
-		if (ThisTarget && ThisTarget->GetClass()->ImplementsInterface(UTargetInterface::StaticClass()))
-		{
-			ITargetInterface::Execute_OnTargetedEnd(ThisTarget);
-		}
-		ThisTarget = nullptr;
-		return;
-	}
+    // Get the hit actor
+    AActor* HitActor = CursorHitResult.GetActor();
 
-	AActor* HitActor = CursorHitResult.GetActor();
-	if (HitActor != ThisTarget)
-	{
-		// Unhighlight the last target
-		if (ThisTarget && ThisTarget->GetClass()->ImplementsInterface(UTargetInterface::StaticClass()))
-		{
-			ITargetInterface::Execute_OnTargetedEnd(ThisTarget);
-		}
+    // If nothing is hit, clear the current target
+    if (!CursorHitResult.bBlockingHit)
+    {
+        if (ThisTarget)
+        {
+            // End targeting for the previous target if it implemented any interface
+            if (ThisTarget->GetClass()->ImplementsInterface(UPlayerInterface::StaticClass()))
+            {
+                IPlayerInterface::Execute_OnPlayerTargetedEnd(ThisTarget);
+            }
+            if (ThisTarget->GetClass()->ImplementsInterface(UTargetInterface::StaticClass()))
+            {
+                ITargetInterface::Execute_OnTargetedEnd(ThisTarget);
+            }
+        }
 
-		// Update the current target
-		ThisTarget = HitActor;
+        ThisTarget = nullptr;
+        return;
+    }
 
-		// Highlight the new target if it implements the interface
-		if (ThisTarget && ThisTarget->GetClass()->ImplementsInterface(UTargetInterface::StaticClass()))
-		{
-			ITargetInterface::Execute_OnTargeted(ThisTarget);
-		}
-	}
+    // If the hit actor is different from the current target
+    if (HitActor != ThisTarget)
+    {
+        // End targeting for the previous target if it implemented any interface
+        if (ThisTarget)
+        {
+            if (ThisTarget->GetClass()->ImplementsInterface(UPlayerInterface::StaticClass()))
+            {
+                IPlayerInterface::Execute_OnPlayerTargetedEnd(ThisTarget);
+            }
+            if (ThisTarget->GetClass()->ImplementsInterface(UTargetInterface::StaticClass()))
+            {
+                ITargetInterface::Execute_OnTargetedEnd(ThisTarget);
+            }
+        }
+
+        // Update the current target
+        ThisTarget = HitActor;
+
+        // Start targeting for the new target if it implements any interface
+        if (ThisTarget)
+        {
+            if (ThisTarget->GetClass()->ImplementsInterface(UPlayerInterface::StaticClass()))
+            {
+                IPlayerInterface::Execute_OnPlayerTargeted(ThisTarget);
+            }
+            if (ThisTarget->GetClass()->ImplementsInterface(UTargetInterface::StaticClass()))
+            {
+                ITargetInterface::Execute_OnTargeted(ThisTarget);
+            }
+        }
+    }
 }
+
 
 void AProjPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
