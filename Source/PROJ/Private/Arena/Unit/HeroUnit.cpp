@@ -3,11 +3,13 @@
 #include "Arena/Unit/HeroUnit.h"
 
 #include "AbilitySystemComponent.h"
+#include "NiagaraComponent.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "AbilitySystem/ProjAttributeSet.h"
 #include "Arena/ArenaManager.h"
 #include "Blueprint/UserWidget.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "PROJ/PROJ.h"
 
 AHeroUnit::AHeroUnit()
 {
@@ -18,6 +20,12 @@ AHeroUnit::AHeroUnit()
 
 
 	AttributeSet = CreateDefaultSubobject<UProjAttributeSet>(TEXT("AttributeSet"));
+
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+
+	DMGBuffEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("DMGBuffEffect"));
+	DMGBuffEffect->SetupAttachment(RootComponent);
+	DMGBuffEffect->bAutoActivate = false;
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 400.0f, 0.0f);
@@ -57,6 +65,34 @@ bool AHeroUnit::LevelUp()
 void AHeroUnit::OnDeath()
 {
 	Super::OnDeath();
+}
+
+void AHeroUnit::OnPlayerTargeted_Implementation()
+{
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_GREEN);
+}
+
+void AHeroUnit::OnPlayerTargetedEnd_Implementation()
+{
+	GetMesh()->SetRenderCustomDepth(false);
+}
+
+void AHeroUnit::RemoveDMGBuff()
+{
+	if(DMGBuffEffect && DMGBuffEffect->IsActive())
+	{
+		DMGBuffEffect->Deactivate();
+		DMGBuffEffect->DestroyComponent();
+	}
+}
+
+void AHeroUnit::StartDMGBuffEffect()
+{
+	if(DMGBuffEffect)
+	{
+		DMGBuffEffect->Activate(true);
+	}
 }
 
 void AHeroUnit::InitAbilityActorInfo()
