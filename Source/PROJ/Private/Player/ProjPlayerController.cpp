@@ -7,6 +7,7 @@
 #include "GameplayTagContainer.h"
 #include "AbilitySystem/ProjAbilitySystemComponent.h"
 #include "Input/DBInputComponent.h"
+#include "Interaction/PlayerInterface.h"
 #include "Interaction/TargetInterface.h"
 
 AProjPlayerController::AProjPlayerController()
@@ -25,6 +26,36 @@ void AProjPlayerController::CursorTrace()
 {
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
 
+	AActor* HitActor = CursorHitResult.GetActor();
+	if (!CursorHitResult.bBlockingHit)
+	{
+		// Unhighlight the last target if any
+		if (ThisTarget && ThisTarget->GetClass()->ImplementsInterface(UPlayerInterface::StaticClass()))
+		{
+			IPlayerInterface::Execute_OnPlayerTargetedEnd(ThisTarget);
+		}
+		ThisTarget = nullptr;
+		return;
+	}
+	
+	if (HitActor != ThisTarget)
+	{
+		// Unhighlight the last target
+		if (ThisTarget && ThisTarget->GetClass()->ImplementsInterface(UPlayerInterface::StaticClass()))
+		{
+			IPlayerInterface::Execute_OnPlayerTargetedEnd(ThisTarget);
+		}
+
+		// Update the current target
+		ThisTarget = HitActor;
+
+		// Highlight the new target if it implements the interface
+		if (ThisTarget && ThisTarget->GetClass()->ImplementsInterface(UPlayerInterface::StaticClass()))
+		{
+			IPlayerInterface::Execute_OnPlayerTargeted(ThisTarget);
+		}
+	}
+
 	if (!CursorHitResult.bBlockingHit)
 	{
 		// Unhighlight the last target if any
@@ -36,7 +67,7 @@ void AProjPlayerController::CursorTrace()
 		return;
 	}
 
-	AActor* HitActor = CursorHitResult.GetActor();
+	
 	if (HitActor != ThisTarget)
 	{
 		// Unhighlight the last target
