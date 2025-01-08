@@ -7,6 +7,8 @@
 #include "Interaction/PlayerInterface.h"
 #include "HeroUnit.generated.h"
 
+class UNiagaraComponent;
+
 UCLASS()
 class PROJ_API AHeroUnit : public AUnitBase, public IPlayerInterface
 {
@@ -27,6 +29,18 @@ public:
 	virtual int GainXp(int Amount) override;
 	virtual bool LevelUp() override;
 	virtual void OnDeath() override;
+
+	virtual void OnPlayerTargeted_Implementation() override;
+	virtual void OnPlayerTargetedEnd_Implementation() override;
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveDMGBuff();
+
+	UFUNCTION(BlueprintCallable)
+	void StartDMGBuffEffect();
+
+	UPROPERTY(EditAnywhere, Category="Combat")
+	UNiagaraComponent* DMGBuffEffect;
 
 	virtual int32 GetPlayerLevel() override;
 
