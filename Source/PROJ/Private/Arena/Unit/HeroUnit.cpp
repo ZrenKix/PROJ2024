@@ -83,7 +83,7 @@ void AHeroUnit::RemoveDMGBuff()
 	if(DMGBuffEffect && DMGBuffEffect->IsActive())
 	{
 		DMGBuffEffect->Deactivate();
-		DMGBuffEffect->SetVisibility(false); // Hides the visual immediately
+		DMGBuffEffect->SetVisibility(false);
 		DMGBuffEffect->SetActive(false); 
 	}
 }
@@ -93,6 +93,8 @@ void AHeroUnit::StartDMGBuffEffect()
 	if(DMGBuffEffect)
 	{
 		DMGBuffEffect->Activate(true);
+		DMGBuffEffect->SetVisibility(true);
+		DMGBuffEffect->SetActive(true);
 	}
 }
 
