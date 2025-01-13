@@ -56,7 +56,14 @@
 			<destination>{ee6b4ed1-c37f-4250-8af8-32b01cdd0b37}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{42de2db5-88ee-4f47-b7df-1aafa4f5993d}" />
+	<object class="EventAutomatableProperties" id="{42de2db5-88ee-4f47-b7df-1aafa4f5993d}">
+		<property name="minimumDistance">
+			<value>0.300000012</value>
+		</property>
+		<property name="maximumDistance">
+			<value>4</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{ed872ae3-6b5d-495f-b508-7e1be5843525}" />
 	<object class="GroupTrack" id="{e4a425be-afb8-4213-a622-3ca4ca8b65f3}">
 		<relationship name="modules">
@@ -72,6 +79,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{55e8ee4e-8620-46ba-be1e-fefc987b4946}">
+		<relationship name="modulators">
+			<destination>{8551e8c7-4e6e-423e-a266-04fe30b0dd45}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{0c79976a-da18-4efb-b4e6-995d48e232f2}</destination>
 		</relationship>
@@ -122,6 +132,29 @@
 		<relationship name="output">
 			<destination>{55e8ee4e-8620-46ba-be1e-fefc987b4946}</destination>
 		</relationship>
+	</object>
+	<object class="ADSRModulator" id="{8551e8c7-4e6e-423e-a266-04fe30b0dd45}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>20</value>
+		</property>
+		<property name="attackShape">
+			<value>-0.675193012</value>
+		</property>
+		<property name="releaseTime">
+			<value>440</value>
+		</property>
+		<property name="releaseShape">
+			<value>0.550516367</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{0c79976a-da18-4efb-b4e6-995d48e232f2}">
 		<relationship name="effects">
