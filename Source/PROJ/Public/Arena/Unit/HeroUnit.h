@@ -22,6 +22,7 @@ private:
 	
 
 public:
+	UFUNCTION(BlueprintCallable)
 	bool IsDead() const;
 	
 	virtual void BeginPlay() override;
