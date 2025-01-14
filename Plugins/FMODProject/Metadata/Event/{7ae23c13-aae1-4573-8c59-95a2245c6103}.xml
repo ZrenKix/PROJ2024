@@ -140,9 +140,29 @@
 	<object class="MixerBusEffectChain" id="{ac6dfbfe-f92c-44a2-8f43-147f9464ba33}">
 		<relationship name="effects">
 			<destination>{ff3c7614-0a57-4f65-8146-fc833177f8e1}</destination>
+			<destination>{8d27ef0b-b8ee-48d6-91a4-5722100baf57}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{dac3187c-06c2-47e3-b6bb-256c59e33b35}" />
 	<object class="MixerBusFader" id="{aa3389c5-14ea-4d2d-9608-74eabaa2ada4}" />
 	<object class="MixerBusFader" id="{ff3c7614-0a57-4f65-8146-fc833177f8e1}" />
+	<object class="ChorusEffect" id="{8d27ef0b-b8ee-48d6-91a4-5722100baf57}">
+		<property name="rate">
+			<value>0.0899999961</value>
+		</property>
+		<property name="depth">
+			<value>9</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{9e1815c7-d4ee-4faa-b22c-b9da21dcbf88}</destination>
+		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{9e1815c7-d4ee-4faa-b22c-b9da21dcbf88}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>depth</value>
+		</property>
+		<property name="amount">
+			<value>14</value>
+		</property>
+	</object>
 </objects>
