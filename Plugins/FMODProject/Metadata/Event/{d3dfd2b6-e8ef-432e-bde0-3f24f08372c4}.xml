@@ -73,7 +73,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{b8a6dd15-b96d-4c97-b9a8-75dbdcf6f4c9}">
 		<property name="volume">
-			<value>4.5</value>
+			<value>-5.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{aeab09e2-445c-4460-9043-48fa548cd17f}</destination>
@@ -112,31 +112,51 @@
 	<object class="MixerBusFader" id="{00c5d557-c19d-45a9-be17-751fb70f919f}" />
 	<object class="MixerBusFader" id="{e4c7fbbb-fb3c-4b37-ba78-920424e59e34}" />
 	<object class="MultibandEqEffect" id="{9e4086f8-6bad-44c9-b824-ede5883876dd}">
+		<property name="filterTypeA">
+			<value>7</value>
+		</property>
 		<property name="filterTypeE">
-			<value>1</value>
+			<value>9</value>
 		</property>
 		<property name="frequencyA">
-			<value>1136.78809</value>
+			<value>6614.95264</value>
 		</property>
 		<property name="frequencyE">
-			<value>10653.3301</value>
+			<value>266.566376</value>
 		</property>
 		<property name="qualityA">
-			<value>1.73248279</value>
+			<value>1.46496558</value>
 		</property>
 		<property name="qualityE">
-			<value>2.51724148</value>
+			<value>0.751586199</value>
+		</property>
+		<property name="gainA">
+			<value>9.3103447</value>
 		</property>
 		<property name="gainE">
-			<value>25.3448257</value>
+			<value>8.27586269</value>
 		</property>
 	</object>
 	<object class="ChorusEffect" id="{b715071c-e695-4a02-a47e-801e21bdbc5d}">
 		<property name="rate">
-			<value>0</value>
+			<value>0.0700000003</value>
 		</property>
 		<property name="depth">
-			<value>70</value>
+			<value>8.5</value>
+		</property>
+		<property name="mix">
+			<value>85.5</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{d555e541-5d27-4f95-85c0-5a10274dbfcd}</destination>
+		</relationship>
+	</object>
+	<object class="RandomizerModulator" id="{d555e541-5d27-4f95-85c0-5a10274dbfcd}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>depth</value>
+		</property>
+		<property name="amount">
+			<value>10</value>
 		</property>
 	</object>
 </objects>

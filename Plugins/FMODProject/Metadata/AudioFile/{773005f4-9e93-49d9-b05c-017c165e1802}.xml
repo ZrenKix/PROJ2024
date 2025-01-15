@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{773005f4-9e93-49d9-b05c-017c165e1802}">
+		<property name="assetPath">
+			<value>Enemies/EnemyEncounter_Triggered.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.8169614512471655</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ffc8284e-fe15-423d-846c-6e671f226029}</destination>
+		</relationship>
+	</object>
+</objects>

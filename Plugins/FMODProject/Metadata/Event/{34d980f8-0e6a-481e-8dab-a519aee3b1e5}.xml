@@ -97,6 +97,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{497d43ec-7b3d-4892-8aa9-b80453285fdb}">
+		<property name="volume">
+			<value>-2.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -113,6 +116,7 @@
 	<object class="MixerBusEffectChain" id="{3cfd0fcb-b727-4244-8d7e-5180c25163fc}">
 		<relationship name="effects">
 			<destination>{9bb49f27-b72d-4838-bf4f-a946447598cc}</destination>
+			<destination>{60af8747-6805-42c7-b30a-a62ca25fd8ad}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a1ef2d37-c04c-44f3-b3ac-be0ced108755}" />
@@ -124,5 +128,24 @@
 	</object>
 	<object class="MixerBusPanner" id="{0f1f1ccd-049b-4097-89ff-f84c2148ff85}" />
 	<object class="MixerBusFader" id="{9bb49f27-b72d-4838-bf4f-a946447598cc}" />
+	<object class="ChorusEffect" id="{60af8747-6805-42c7-b30a-a62ca25fd8ad}">
+		<property name="rate">
+			<value>0.0899999961</value>
+		</property>
+		<property name="depth">
+			<value>9</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{3d34f346-acff-46ba-a6c9-de1afa7939ed}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{8e291cf5-8dd9-47de-932c-fbddfd622950}" />
+	<object class="RandomizerModulator" id="{3d34f346-acff-46ba-a6c9-de1afa7939ed}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>depth</value>
+		</property>
+		<property name="amount">
+			<value>14</value>
+		</property>
+	</object>
 </objects>
