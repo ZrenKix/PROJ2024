@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{552ebde3-d1bf-45b6-a9e8-2ac2fa9be0d9}">
+		<property name="assetPath">
+			<value>Misc/Cartoon Bell Hit 01.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>4.3733333333333331</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{ffc8284e-fe15-423d-846c-6e671f226029}</destination>
+		</relationship>
+	</object>
+</objects>
